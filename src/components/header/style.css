@@ -177,26 +177,15 @@
  .site-menu {
   display: none;
  }
-
  .content-header {
   justify-content: space-between;
  }
-
- .header-section,
- .content-header,
- .site-user {
-  height: 40px;
- }
  .site-logo a,
  .site-logo a img {
-  height: 30px;
+  height: 35px;
  }
  .user-avatar {
-  width: 35px !important;
-  height: 35px !important;
- }
- .user-details {
-  top: 41px;
-  padding: 5px;
+  width: 40px !important;
+  height: 40px !important;
  }
 }
