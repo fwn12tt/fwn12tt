@@ -10,14 +10,17 @@ import { auth } from "./firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import LogIn from "./containers/logIn";
 import SignUp from "./containers/signUp";
-import Header from './components/header'
-import Register from "./Register";
+import Header from './components/header';
+import Gallery from './containers/gallery';
+import NewDiary from './containers/newDiary';
 import Reset from "./Reset";
 import Dashboard from "./Dashboard";
 import Loading from "./core/common/loading/loading";
 import Home from "./containers/home";
 import "./core/style/common.css";
 import { Toaster } from 'react-hot-toast';
+import Categories from "./containers/categories";
+import Profile from "./containers/profile";
 
 function App() {
   const [user, loading] = useAuthState(auth);
@@ -30,7 +33,7 @@ function App() {
   }
   return (
     <div className="app">
-      <div className="container">
+      <div className="site-wrapper">
         <Toaster position="top-right"/>
         <Router>
           {user && <Header/>}
@@ -44,6 +47,10 @@ function App() {
             <Route exact path="/signup" element={<SignUp />} />
             <Route exact path="/reset" element={<Reset />} />
             <Route exact path="/dashboard" element={<Dashboard />} />
+            <Route exact path="/new-diary" element={<NewDiary />} />
+            <Route exact path="/gallery" element={<Gallery />} />
+            <Route exact path="/categories" element={<Categories />} />
+            <Route exact path="/profile" element={<Profile />} />
           </Routes>
         </Router>
       </div>

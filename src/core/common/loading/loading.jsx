@@ -4,7 +4,7 @@ import './style.css'
 export default function Loading() {
   return (
    <div className="app">
-     <div class="loading">
+     <div className="loading">
       <span data-text="F">F</span>
       <span data-text="W">W</span>
       <span data-text="N">N</span>
