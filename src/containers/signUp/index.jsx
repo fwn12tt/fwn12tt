@@ -135,7 +135,7 @@ export default function SignUp() {
   return (
     <div className="content-login flex-box flex-column">
       <div className="wrapper-form">
-        <h3 className="title-login">Sign Up</h3>
+        <h3 className="title-login">Sign Upssss</h3>
         <Box component="form" autoComplete="off" className="form-login">
           <FormControl fullWidth sx={{ m: 1 }} className="form-control">
             <InputLabel htmlFor="signup-username">Fwn12tt's username</InputLabel>
