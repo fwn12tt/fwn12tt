@@ -1,0 +1,161 @@
+:root {
+ --color-primary: #285430;
+ --color-secondary: #5F8D4E;
+ --color-third: #4E944F;
+ --color-fourth: #83BD75;
+ --color-fifth: #B4E197;
+ --color-fifth-02: rgba(180, 225, 151, 0.2)
+}
+@import url('https://fonts.googleapis.com/css2?family=Creepster&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Galada&display=swap');
+
+*, body {
+ box-sizing: border-box;
+ padding: 0;
+ margin: 0;
+ font-family: 'Roboto', sans-serif;
+ color: #222222;
+}
+
+.app {
+ min-height: 100vh;
+ background-color: var(--color-fifth-02);
+ position: relative;
+ display: flex;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+ font-family: 'Galada', cursive;
+}
+
+html {
+ font-size: 14px;
+}
+
+.container {
+ padding-right: 15px;
+ padding-left: 15px;
+ margin-right: auto;
+ margin-left: auto;
+ display: flex;
+}
+
+.site-wrapper {
+ background-color: #f2f2f2;
+}
+
+.site-content {
+ padding: 50px 0;
+}
+
+.site-search input,
+.item-product,
+.form-group button,
+.desc {
+ font-family: 'Roboto', sans-serif;
+}
+
+.flex-box {
+ display: flex;
+ flex-wrap: wrap;
+}
+
+.flex-column {
+ flex-direction: column;
+}
+
+.flex-row {
+ flex-direction: row;
+}
+
+.flex-box-2i>* {
+ width: calc(100%/2);
+}
+
+.flex-box-3i>* {
+ width: calc(100%/3);
+}
+
+.flex-box-4i>* {
+ width: calc(100%/4);
+}
+
+.flex-space-20 {
+ margin: -10px;
+}
+
+.flex-space-20>* {
+ padding: 10px;
+}
+
+.flex-space-30 {
+ margin: -15px;
+}
+
+.flex-space-30>* {
+ padding: 15px;
+}
+
+.flex-space-40 {
+ margin: -20px;
+}
+
+.flex-space-40>* {
+ padding: 20px;
+}
+
+.flex-space-50 {
+ margin: -25px;
+}
+
+.flex-space-50>* {
+ padding: 25px;
+}
+
+.btn-button {
+ line-height: 1 !important;
+ padding: 8px 12px !important;
+ cursor: pointer !important;
+}
+
+@media (min-width: 768px) {
+ .container {
+  width: 750px;
+ }
+
+ .container--fw {
+  padding-left: 30px;
+  padding-right: 30px;
+ }
+}
+
+@media (min-width: 992px) {
+ .container {
+  width: 970px;
+ }
+}
+
+@media (min-width: 1200px) {
+ .container {
+  width: 1200px;
+ }
+}
+
+@media (max-width: 767px) and (min-width: 576px) {
+ .container {
+  width: 540px;
+ }
+}
+@media(max-width: 575px) {
+ .container {
+  width: 100%;
+ }
+ .btn-button {
+  font-size: 11px !important;
+ }
+}
