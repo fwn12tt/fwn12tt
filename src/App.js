@@ -7,6 +7,9 @@ import {
   Navigate,
 } from "react-router-dom";
 import { auth } from "./firebase";
+import {
+  sendEmailVerification,
+ } from 'firebase/auth';
 import { useAuthState } from "react-firebase-hooks/auth";
 import LogIn from "./containers/logIn";
 import SignUp from "./containers/signUp";
@@ -26,6 +29,10 @@ function App() {
   const [user, loading] = useAuthState(auth);
   useEffect(() => {
     if(user) {
+      console.log(user);
+      if(!user.emailVerified) {
+        sendEmailVerification(user);
+      }
     }
   }, [loading, user]);
   if (loading) {

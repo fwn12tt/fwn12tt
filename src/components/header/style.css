@@ -172,9 +172,25 @@
   top: 51px;
  }
 }
-
+@media (min-width:768px) {
+ .site-offcanvas,
+ .site-logo-mobile {
+  display: none;
+ }
+}
 @media (max-width: 767px) {
- .site-menu {
+ .site-offcanvas {
+  display: flex;
+  height: 50px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+ }
+ .site-offcanvas svg {
+  fill: var(--color-primary);
+ }
+ .site-menu,
+ .site-logo-desktop {
   display: none;
  }
  .content-header {
