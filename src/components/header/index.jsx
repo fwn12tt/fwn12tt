@@ -5,26 +5,20 @@ import AvatarImg from "../../assets/images/happy1.jpeg";
 import Avatar from "@mui/material/Avatar";
 import "./style.css";
 import { logout } from "../../firebase";
-import MenuIcon from '@mui/icons-material/Menu';
+import MenuIcon from "@mui/icons-material/Menu";
 //
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
+import Box from "@mui/material/Box";
+import Drawer from "@mui/material/Drawer";
+import Divider from "@mui/material/Divider";
+import { getAuth } from "firebase/auth";
 
 export default function Header() {
-  const [state, setState] = React.useState({
-    left: false,
-  });
-  const toggleDrawer = (anchor, open) => (event) => {
-    setState({ ...state, [anchor]: open });
+  const [isOpen, setIsOpen] = useState(false);
+  const toggleDrawer = (open) => (event) => {
+    setIsOpen(open);
   };
+  const user = getAuth();
+  console.log(user.currentUser);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
@@ -35,47 +29,53 @@ export default function Header() {
     setAnchorEl(null);
   };
   const display = {
-    display: 'block'
-  }
+    display: "block",
+  };
   const none = {
-    display: 'none'
-  }
+    display: "none",
+  };
   const onClickLogOut = () => {
     logout();
     return navigate("login");
-  }
-  const list = (anchor) => (
+  };
+  const list = () => (
     <Box
       sx={{ width: 250 }}
       role="presentation"
-      onClick={toggleDrawer(anchor, false)}
-      onKeyDown={toggleDrawer(anchor, false)}
+      onClick={toggleDrawer(false)}
+      onKeyDown={toggleDrawer(false)}
+      className="offcanvas-wrapper"
     >
-      <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
+      <div className="offcanvas-logo">
+        <Link to="/" onClick={toggleDrawer(false)}>
+          <img src={Logo} alt="logo" />
+        </Link>
+      </div>
       <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
+      <div className="offcanvas-menu">
+        <ul className="menu-warrap-offcanvas">
+          <li className="menu-child">
+            <NavLink to="/" onClick={toggleDrawer(false)}>
+              Home
+            </NavLink>
+          </li>
+          <li className="menu-child">
+            <NavLink to="/categories" onClick={toggleDrawer(false)}>
+              Categories
+            </NavLink>
+          </li>
+          <li className="menu-child">
+            <NavLink to="/new-diary" onClick={toggleDrawer(false)}>
+              New Diary
+            </NavLink>
+          </li>
+          <li className="menu-child">
+            <NavLink to="/gallery" onClick={toggleDrawer(false)}>
+              Gallery
+            </NavLink>
+          </li>
+        </ul>
+      </div>
     </Box>
   );
 
@@ -89,7 +89,7 @@ export default function Header() {
             </Link>
           </div>
           <div className="site-offcanvas">
-            <MenuIcon onClick={toggleDrawer('left', true)}/>
+            <MenuIcon onClick={toggleDrawer(true)} />
           </div>
           <div className="site-logo site-logo-mobile">
             <Link to="/">
@@ -115,30 +115,30 @@ export default function Header() {
           <div className="site-user">
             <Avatar
               alt="fwn12tt"
-              src={AvatarImg}
+              src={user ? user.currentUser.photoURL : AvatarImg}
               sx={{ width: 45, height: 45 }}
               className="user-avatar"
               onClick={handleClick}
             />
             <div className="user-details" style={open ? display : none}>
-                <div className="wrapper">
-                  <Link to="/profile" onClick={handleClose}>Fwn12tt's Profile</Link>
-                  <span onClick={onClickLogOut}>Log Out</span>
-                </div>
+              <div className="wrapper">
+                <Link to="/profile" onClick={handleClose}>
+                  Fwn12tt's Profile
+                </Link>
+                <span onClick={onClickLogOut}>Log Out</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div className="blur" style={open ? display : none} onClick={handleClose}></div>
-      <React.Fragment>
-          <Drawer
-            anchor={'left'}
-            open={state['left']}
-            onClose={toggleDrawer('left', false)}
-          >
-            {list('left')}
-          </Drawer>
-        </React.Fragment>
+      <div
+        className="blur"
+        style={open ? display : none}
+        onClick={handleClose}
+      ></div>
+      <Drawer anchor={"left"} open={isOpen} onClose={toggleDrawer(false)} className="offcanvas-parent">
+        {list("left")}
+      </Drawer>
     </div>
   );
 }
