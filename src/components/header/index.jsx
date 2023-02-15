@@ -36,7 +36,7 @@ export default function Header() {
   };
   const onClickLogOut = () => {
     logout();
-    return navigate("login");
+    return navigate("/login");
   };
   const list = () => (
     <Box
@@ -115,7 +115,7 @@ export default function Header() {
           <div className="site-user">
             <Avatar
               alt="fwn12tt"
-              src={user ? user.currentUser.photoURL : AvatarImg}
+              src={user ? user?.currentUser?.photoURL : AvatarImg}
               sx={{ width: 45, height: 45 }}
               className="user-avatar"
               onClick={handleClick}
