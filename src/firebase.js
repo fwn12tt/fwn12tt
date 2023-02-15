@@ -110,10 +110,10 @@ const registerWithEmailAndPassword = async (name, email, password) => {
 const sendPasswordReset = async (email) => {
  try {
    await sendPasswordResetEmail(auth, email);
-   alert("Password reset link sent!");
+   toast.success('Password reset link sent successsssssssss ^-^');
  } catch (err) {
    console.error(err);
-   alert(err.message);
+   toast.error('Password reset link sent errorrrrrrr :(((');
  }
 };
 

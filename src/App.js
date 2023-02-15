@@ -16,7 +16,6 @@ import SignUp from "./containers/signUp";
 import Header from './components/header';
 import Gallery from './containers/gallery';
 import NewDiary from './containers/newDiary';
-import Reset from "./Reset";
 import Dashboard from "./Dashboard";
 import Loading from "./core/common/loading/loading";
 import Home from "./containers/home";
@@ -24,12 +23,12 @@ import "./core/style/common.css";
 import { Toaster } from 'react-hot-toast';
 import Categories from "./containers/categories";
 import Profile from "./containers/profile";
+import ForgotPassword from "./containers/forgotPassword";
 
 function App() {
   const [user, loading] = useAuthState(auth);
   useEffect(() => {
     if(user) {
-      console.log(user);
       if(!user.emailVerified) {
         sendEmailVerification(user);
       }
@@ -52,7 +51,7 @@ function App() {
             />
             <Route exact path="/login" element={<LogIn />} />
             <Route exact path="/signup" element={<SignUp />} />
-            <Route exact path="/reset" element={<Reset />} />
+            <Route exact path="/forgot-password" element={<ForgotPassword />} />
             <Route exact path="/dashboard" element={<Dashboard />} />
             <Route exact path="/new-diary" element={<NewDiary />} />
             <Route exact path="/gallery" element={<Gallery />} />

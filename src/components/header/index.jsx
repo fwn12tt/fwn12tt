@@ -18,7 +18,6 @@ export default function Header() {
     setIsOpen(open);
   };
   const user = getAuth();
-  console.log(user.currentUser);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const navigate = useNavigate();

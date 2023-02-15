@@ -51,7 +51,8 @@
  font-weight: 600;
 }
 #login-password, #signup-password,
-#confirm-password {
+#confirm-password,
+#forgot-email {
  width: 203px !important;
 }
 .btn-login {
@@ -61,10 +62,23 @@
 }
 .btn-forgot {
  background-color: var(--color-secondary) !important;
+ color: #fff;
+ text-transform: uppercase;
+ text-decoration: none;
+ font-weight: 500;
+ font-size: 12px;
+ height: 28px;
+ line-height: 28px;
+ border-radius: 4px;
+ display: block;
+ width: fit-content;
+ padding: 0 10px;
 }
-.btn-login:disabled {
+.btn-login:disabled,
+.btn-forgot:disabled {
  background-color: var(--color-primary) !important;
  cursor: not-allowed;
+ color: #fff !important;
 }
 .quick-login {
  justify-content: center;
@@ -106,7 +120,8 @@
  }
  #login-password,
  #signup-password,
- #confirm-password {
+ #confirm-password,
+ #forgot-email {
   width: 153px !important;
  }
  .quick-login {
