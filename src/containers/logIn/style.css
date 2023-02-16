@@ -51,8 +51,7 @@
  font-weight: 600;
 }
 #login-password, #signup-password,
-#confirm-password,
-#forgot-email {
+#confirm-password {
  width: 203px !important;
 }
 .btn-login {
@@ -120,8 +119,7 @@
  }
  #login-password,
  #signup-password,
- #confirm-password,
- #forgot-email {
+ #confirm-password {
   width: 153px !important;
  }
  .quick-login {

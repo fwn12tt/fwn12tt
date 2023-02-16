@@ -145,7 +145,7 @@
  z-index: 50;
 }
 
-.offcanvas-parent .css-4t3x6l-MuiPaper-root-MuiDrawer-paper {
+.offcanvas-parent .MuiPaper-root {
  background-color: var(--color-fifth) !important;
 }
 
@@ -234,6 +234,9 @@
 }
 
 @media (max-width: 767px) {
+ .offcanvas-parent .MuiPaper-root {
+  background-color: var(--color-fifth) !important;
+ }
  .site-offcanvas {
   display: flex;
   height: 50px;
