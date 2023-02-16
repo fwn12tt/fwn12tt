@@ -81,6 +81,13 @@ export default function ForgotPassword() {
             Send For Fwn12tt
           </Button>
         </div>
+        <div style={{ textAlign: "center", marginBottom: "15px" }}>
+          Fwn12tt have account{" "}
+          <Link to="/login" className="link-login">
+            Log In
+          </Link>
+        </div>
+        <p style={{textAlign: "center", marginBottom: "15px"}}>Or login with</p>
         <div style={{ textAlign: "center", marginBottom: "10px" }}>
           Fwn12tt don't have account{" "}
           <Link to="/signup" style={{ color: "red" }}>
