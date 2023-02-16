@@ -146,7 +146,7 @@
 }
 
 .offcanvas-parent .css-4t3x6l-MuiPaper-root-MuiDrawer-paper {
- background-color: var(--color-fifth);
+ background-color: var(--color-fifth) !important;
 }
 
 .offcanvas-parent .offcanvas-logo {
