@@ -76,7 +76,7 @@ export default function ForgotPassword() {
             </FormHelperText>
           </FormControl>
         </Box>
-        <div style={{ marginBottom: "20px" }}>
+        <div style={{ marginBottom: "20px", textAlign: "center" }}>
           <Button variant="contained" disabled={!vaildEmail} className="btn-button btn-forgot" onClick={() => sendPasswordReset(email)}>
             Send For Fwn12tt
           </Button>

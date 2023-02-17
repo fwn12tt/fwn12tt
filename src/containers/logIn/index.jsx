@@ -135,7 +135,7 @@ export default function LogIn() {
             <FormHelperText className="error-message">{errorPassword}</FormHelperText>
           </FormControl>
         </Box>
-        <div style={{marginBottom: "15px"}} className="flex-box">
+        <div style={{marginBottom: "15px", justifyContent: "center"}} className="flex-box">
           <Button variant="contained" disabled={!(vaildEmail && vaildPassword)} className="btn-button btn-login" onClick={() => logInWithEmailAndPassword(email,password)}>Log In</Button>
           <Link variant="contained" className="btn-forgot" to="/forgot-password">Forgot Password</Link>
         </div>
