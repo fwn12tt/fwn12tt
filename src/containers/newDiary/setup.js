@@ -37,11 +37,6 @@ export const module = {
     // toggle to add extra line breaks when pasting HTML:
     matchVisual: false,
   },
-  imageResize: {
-    parchment: Quill.import("parchment"),
-    modules: ["Resize", "DisplaySize"],
-    displaySize: true,
-  },
   "emoji-toolbar": true,
   "emoji-shortname": true,
 };

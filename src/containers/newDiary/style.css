@@ -24,3 +24,32 @@
 .choose-mood h2 {
  color: var(--color-secondary);
 }
+.content-preview {
+ overflow: hidden;
+}
+.content-preview img {
+ width: 100%;
+ height: auto;
+ object-fit: cover;
+ display: block;
+}
+/* @media (max-width:1199px) {
+ .content-preview img {
+  height: 350px;
+ }
+}
+@media (max-width:991px) {
+ .content-preview img {
+  height: 300px;
+ }
+}
+@media (max-width:767px) {
+ .content-preview img {
+  height: 250px;
+ }
+}
+@media (max-width:575px) {
+ .content-preview img {
+  height: 200px;
+ }
+} */
