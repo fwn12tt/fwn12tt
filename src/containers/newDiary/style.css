@@ -1,0 +1,26 @@
+.choose-mood .MuiRadio-root.Mui-checked span svg path{
+ fill: var(--color-primary) !important;
+}
+.choose-mood .MuiRadio-root.Mui-checked + span.MuiFormControlLabel-label {
+ color: var(--color-primary) !important;
+}
+.choose-mood .MuiRadio-root {
+ padding: 0 !important;
+ padding-right: 5px !important;
+}
+.choose-mood label {
+ margin-right: 5px !important;
+ margin-left: 0 !important;
+}
+.choose-mood .list-mood {
+ margin: -7.5px -15px;
+}
+.choose-mood .list-mood>* {
+ padding: 7.5px 15px;
+}
+.choose-mood {
+ margin-bottom: 15px;
+}
+.choose-mood h2 {
+ color: var(--color-secondary);
+}
