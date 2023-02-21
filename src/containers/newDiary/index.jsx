@@ -26,7 +26,7 @@ export default function NewDiary() {
   }, [user, loading]);
   const onChange = (value) => {
     setContent(value);
-    if (value) {
+    if (value !== '') {
       setIsValidSave(true);
     } else {
       setIsValidSave(false);
@@ -143,7 +143,7 @@ export default function NewDiary() {
                   <Emoji unified="1f914" size="25" />
                 </div>
               </div>
-              {/* <h4 className="text-mood">{textMood}</h4> */}
+              <h4 className="text-mood">{textMood}</h4>
             </FormControl>
           </div>
           <ReactQuill
