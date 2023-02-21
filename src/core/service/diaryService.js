@@ -14,9 +14,9 @@ import toast from "react-hot-toast";
 
 const diariesDB = collection(db, "diaries");
 
-const createDiary = async (uid, uidUser, emailUser, content, statusMood) => {
+const createDiary = async (uid, uidUser, emailUser, nameUser, content, statusMood) => {
   try {
-    await setDoc(doc(db, 'diaries', uid), {uidUser, emailUser, content, statusMood})
+    await setDoc(doc(db, 'diaries', uid), {uidUser, emailUser, nameUser, content, statusMood})
     toast.success("Create diary successsssssssss ^-^");
     const docSnap = await getDoc(doc(db, 'diaries', uid));
     if (docSnap.exists()) {
@@ -50,10 +50,20 @@ const getDiaries = async (userEmail) => {
     if (diaries.docs.length > 0) {
       return diaries.docs;
     }
-    // return await getDoc(query);
   } catch (error) {
     console.log(error);
   }
 };
 
-export { createDiary, updateDiary,getDiaries };
+const getDiary = async (uid) => {
+  try {
+    const docSnap = await getDoc(doc(db, 'diaries', uid));
+    if(docSnap.exists()) {
+      return docSnap;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export { createDiary, updateDiary, getDiaries, getDiary };

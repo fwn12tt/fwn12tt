@@ -14,19 +14,20 @@ import { auth } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { createDiary, updateDiary } from "../../core/service/diaryService";
 import { v4 as uuidv4} from 'uuid';
+import LoadingService from "../../core/common/loadingService";
+
 export default function NewDiary() {
   const [content, setContent] = useState("");
   const [status, setStatus] = useState("happy");
   const [isValidSave, setIsValidSave] = useState(false);
   const [textMood, setTextMood] = useState(CONSTANTS.TEXT_HAPPY);
-  const [user, loading] = useAuthState(auth);
+  const [user] = useAuthState(auth);
   const [uid, setUid] = useState('');
-  useEffect(() => {
+  const [loading, setLoading] = useState(false);
 
-  }, [user, loading]);
   const onChange = (value) => {
     setContent(value);
-    if (value !== '') {
+    if (value !== '' && value !== '<p><br></p>') {
       setIsValidSave(true);
     } else {
       setIsValidSave(false);
@@ -66,24 +67,33 @@ export default function NewDiary() {
     inputProps: { "aria-label": item },
   });
 
-  const onSaveDiary = (event, uidUser, emailUser, content, statusMood) => {
+  const onSaveDiary = (event, uidUser, emailUser, nameUser, content, statusMood) => {
     event.preventDefault();
     let uidv4 = uuidv4();
+    setLoading(true);
     if(!uid) {
-      createDiary(uidv4, uidUser, emailUser, content, statusMood).then(res => {
-        console.log(res, res.id, res.data());
+      createDiary(uidv4, uidUser, emailUser, nameUser, content, statusMood).then(res => {
         setUid(res.id);
+        setLoading(false);
       });
     }else {
-      console.log(uid);
       updateDiary(uid, {content, statusMood}).then(res => {
-        console.log(res, res.id, res.data());
+        setLoading(false);
       })
     }
-    
   };
+  const onClear = (event) => {
+    event.preventDefault();
+    setUid("");
+    setTextMood(CONSTANTS.TEXT_HAPPY);
+    setStatus("happy");
+    controlProps("happy");
+    setContent("");
+    setIsValidSave(false);
+  }
   return (
     <div className="site-content">
+      {loading && <LoadingService/>}
       <div className="container">
         <div className="content-edit">
           <div className="choose-mood">
@@ -143,7 +153,7 @@ export default function NewDiary() {
                   <Emoji unified="1f914" size="25" />
                 </div>
               </div>
-              <h4 className="text-mood">{textMood}</h4>
+              {/* <h4 className="text-mood">{textMood}</h4> */}
             </FormControl>
           </div>
           <ReactQuill
@@ -156,10 +166,13 @@ export default function NewDiary() {
           />
         </div>
         <div className="list-btn" style={{marginTop: "15px"}}>
-          <button className="btn-save-diary" disabled={!isValidSave} onClick={e => onSaveDiary(e, user.uid, user.email, content, status)}>
+          <button className="btn-save-diary" disabled={!isValidSave} onClick={e => onSaveDiary(e, user.uid, user.email, user.displayName, content, status)}>
             Save
           </button>
-          <Link className="btn-view-single-diary" to="/single-diary/1234">View Diary</Link>
+          <button className="btn-save-diary" style={{marginLeft: "15px"}} onClick={e => onClear(e)}>
+            Clear
+          </button>
+          {uid && <Link className="btn-view-single-diary" to={`/single-diary/${uid}`}>View Diary</Link>}
         </div>
       </div>
     </div>
