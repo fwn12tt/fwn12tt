@@ -6,9 +6,6 @@ import {
   Navigate,
 } from "react-router-dom";
 import { auth } from "./firebase";
-import {
-  sendEmailVerification,
- } from 'firebase/auth';
 import { useAuthState } from "react-firebase-hooks/auth";
 import LogIn from "./containers/logIn";
 import SignUp from "./containers/signUp";
@@ -22,14 +19,12 @@ import { Toaster } from 'react-hot-toast';
 import Categories from "./containers/categories";
 import Profile from "./containers/profile";
 import ForgotPassword from "./containers/forgotPassword";
+import SingleDiary from "./containers/singleDiary";
 
 function App() {
   const [user, loading] = useAuthState(auth);
   useEffect(() => {
     if(user) {
-      if(!user.emailVerified) {
-        sendEmailVerification(user);
-      }
     }
   }, [loading, user]);
   if (loading) {
@@ -54,6 +49,7 @@ function App() {
             <Route exact path="/gallery" element={<Gallery />} />
             <Route exact path="/categories" element={<Categories />} />
             <Route exact path="/profile" element={<Profile />} />
+            <Route exact path="/single-diary/:uid" element={<SingleDiary />} />
           </Routes>
         </Router>
       </div>

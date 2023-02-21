@@ -33,23 +33,30 @@
  object-fit: cover;
  display: block;
 }
-/* @media (max-width:1199px) {
- .content-preview img {
-  height: 350px;
- }
+.text-mood {
+ font-size: 16px;
+ font-weight: 500;
+ color: var(--color-secondary);
+ margin-top: 5px;
 }
-@media (max-width:991px) {
- .content-preview img {
-  height: 300px;
- }
+.btn-save-diary,
+.btn-view-single-diary {
+ padding: 6px 20px;
+ font-size: 14px;
+ font-weight: 500;
+ text-transform: uppercase;
+ background-color: var(--color-secondary);
+ color: white;
+ border: 1px solid var(--color-secondary);
+ border-radius: 4px;
+ cursor: pointer;
 }
-@media (max-width:767px) {
- .content-preview img {
-  height: 250px;
- }
+.btn-save-diary:disabled {
+ background-color: var(--color-primary);
+ cursor: not-allowed;
 }
-@media (max-width:575px) {
- .content-preview img {
-  height: 200px;
- }
-} */
+.btn-view-single-diary {
+ cursor: pointer;
+ text-decoration: none;
+ margin-left: 15px;
+}

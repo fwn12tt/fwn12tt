@@ -30,7 +30,6 @@ export const module = {
       { indent: "-1" },
       { indent: "+1" },
     ],
-    ["image"],
     ["emoji"],
   ],
   clipboard: {

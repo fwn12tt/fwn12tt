@@ -51,7 +51,7 @@ html {
 }
 
 .site-content {
- padding: 40px 0;
+ padding: 20px 0 40px 0;
 }
 
 .site-search input,
@@ -138,12 +138,6 @@ html {
 @media (min-width: 992px) {
  .container {
   width: 970px;
- }
-}
-
-@media (min-width: 1200px) {
- .container {
-  width: 1200px;
  }
 }
 

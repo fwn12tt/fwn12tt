@@ -237,6 +237,7 @@
  .offcanvas-parent .MuiPaper-root {
   background-color: var(--color-fifth) !important;
  }
+
  .site-offcanvas {
   display: flex;
   height: 50px;
@@ -266,5 +267,12 @@
  .user-avatar {
   width: 40px !important;
   height: 40px !important;
+ }
+}
+
+@media (max-width:575px) {
+ .user-avatar {
+  width: 36px !important;
+  height: 36px !important;
  }
 }
