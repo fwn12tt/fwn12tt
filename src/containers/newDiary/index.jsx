@@ -36,7 +36,7 @@ export default function NewDiary() {
     setStatus(e.target.value);
     switch (e.target.value) {
       case "happy":
-        setTextMood(CONSTANTS.TEXT_FUNNY);
+        setTextMood(CONSTANTS.TEXT_HAPPY);
         break;
       case "funny":
         setTextMood(CONSTANTS.TEXT_FUNNY);
@@ -143,7 +143,7 @@ export default function NewDiary() {
                   <Emoji unified="1f914" size="25" />
                 </div>
               </div>
-              <h4 className="text-mood">{textMood}</h4>
+              {/* <h4 className="text-mood">{textMood}</h4> */}
             </FormControl>
           </div>
           <ReactQuill
