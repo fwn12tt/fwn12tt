@@ -1,6 +1,6 @@
 import {
   collection,
-  addDoc,
+  setDoc,
   getDocs,
   getDoc,
   updateDoc,
@@ -16,12 +16,11 @@ const diariesDB = collection(db, "diaries");
 
 const createDiary = async (uid, uidUser, emailUser, content, statusMood) => {
   try {
-    await addDoc(diariesDB, { uid, uidUser, emailUser, content, statusMood });
+    await setDoc(doc(db, 'diaries', uid), {uidUser, emailUser, content, statusMood})
     toast.success("Create diary successsssssssss ^-^");
-    const q = query(diariesDB, where("uid", "==", uid));
-    const docSnap = await getDocs(q);
-    if (docSnap.docs.length > 0) {
-      return docSnap.docs[0].data();
+    const docSnap = await getDoc(doc(db, 'diaries', uid));
+    if (docSnap.exists()) {
+      return docSnap;
     }
   } catch (error) {
     console.log(error);
@@ -31,16 +30,12 @@ const createDiary = async (uid, uidUser, emailUser, content, statusMood) => {
 
 const updateDiary = async (uid, dataUpdate) => {
   try {
-    const diary = doc(db, "diaries", uid);
-    const snap = await getDoc(diary);
-    console.log(snap);
-    console.log(snap.exists());
-    await updateDoc(diary, dataUpdate);
+    const snap = doc(db, "diaries", uid);
+    await updateDoc(snap, dataUpdate);
     toast.success("Update diary successsssssssss ^-^");
-    const q = query(diariesDB, where("uid", "==", uid));
-    const docSnap = await getDocs(q);
-    if (docSnap.docs.length > 0) {
-      return docSnap.docs[0].data();
+    const docSnapUpdate =  await getDoc(snap);
+    if (docSnapUpdate.exists()) {
+      return docSnapUpdate;
     }
   } catch (error) {
     console.log(error);

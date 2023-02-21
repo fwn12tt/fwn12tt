@@ -12,7 +12,7 @@ import { module, formats } from "./setup";
 import * as CONSTANTS from "./constants";
 import { auth } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { createDiary, updateDiary, getDiaries } from "../../core/service/diaryService";
+import { createDiary, updateDiary } from "../../core/service/diaryService";
 import { v4 as uuidv4} from 'uuid';
 export default function NewDiary() {
   const [content, setContent] = useState("");
@@ -20,13 +20,9 @@ export default function NewDiary() {
   const [isValidSave, setIsValidSave] = useState(false);
   const [textMood, setTextMood] = useState(CONSTANTS.TEXT_HAPPY);
   const [user, loading] = useAuthState(auth);
-  const [listDiaries, setListDiaries] = useState([]);
   const [uid, setUid] = useState('');
-  const [diary, setDiary] = useState();
   useEffect(() => {
-    getDiaries(user.email).then(res => {
-      setListDiaries(res.docs.map(doc => doc.data()));
-    });
+
   }, [user, loading]);
   const onChange = (value) => {
     setContent(value);
@@ -75,14 +71,13 @@ export default function NewDiary() {
     let uidv4 = uuidv4();
     if(!uid) {
       createDiary(uidv4, uidUser, emailUser, content, statusMood).then(res => {
-        console.log(res);
-        setUid(res.uid);
-        setDiary(res);
+        console.log(res, res.id, res.data());
+        setUid(res.id);
       });
     }else {
       console.log(uid);
-      updateDiary(uid, {content: content, statusMood: statusMood}).then(res => {
-        console.log(res);
+      updateDiary(uid, {content, statusMood}).then(res => {
+        console.log(res, res.id, res.data());
       })
     }
     
@@ -148,7 +143,7 @@ export default function NewDiary() {
                   <Emoji unified="1f914" size="25" />
                 </div>
               </div>
-              {/* <h4 className="text-mood">{textMood}</h4> */}
+              <h4 className="text-mood">{textMood}</h4>
             </FormControl>
           </div>
           <ReactQuill
