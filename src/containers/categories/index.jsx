@@ -7,7 +7,7 @@ import { auth } from "../../firebase";
 import { Link } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import DeleteIcon from '@mui/icons-material/Delete';
-import BorderColorIcon from '@mui/icons-material/BorderColor';
+import EditIcon from '@mui/icons-material/Edit';
 
 export default function Categories() {
   const [diaries, setDiaries] = useState([]);
@@ -36,7 +36,7 @@ export default function Categories() {
                   <div className="diary-top flex-box">
                     <p>{diary.statusMood}</p>
                     <div className="diary-action flex-box">
-                      <BorderColorIcon/>
+                      <EditIcon/>
                       <DeleteIcon/>
                     </div>
                   </div>
@@ -50,12 +50,12 @@ export default function Categories() {
                       <Avatar
                         alt="fwn12tt"
                         src={diary.userUrl}
-                        sx={{ width: 35, height: 35 }}
+                        sx={{ width: 30, height: 30 }}
                         className="diary-author-avatar"
                       />
                       <p className="diary-author-name">{diary.userName}</p>
                     </Link>
-                    <Link to={`/single-diary/${diary.uid}`}>read more</Link>
+                    <Link to={`/single-diary/${diary.uid}`} className="read-more">read more</Link>
                   </div>
                 </div>
               </div>
