@@ -1,10 +1,13 @@
-import React, {useState, useEffect} from 'react';
-import './style.css';
-import { getDiaries } from '../../core/service/diaryService';
+import React, { useState, useEffect } from "react";
+import "./style.css";
+import { getDiaries } from "../../core/service/diaryService";
 import { useAuthState } from "react-firebase-hooks/auth";
-import LoadingService from '../../core/common/loadingService';
-import { auth } from '../../firebase';
-import { Link } from 'react-router-dom';
+import LoadingService from "../../core/common/loadingService";
+import { auth } from "../../firebase";
+import { Link } from "react-router-dom";
+import Avatar from "@mui/material/Avatar";
+import DeleteIcon from '@mui/icons-material/Delete';
+import BorderColorIcon from '@mui/icons-material/BorderColor';
 
 export default function Categories() {
   const [diaries, setDiaries] = useState([]);
@@ -12,35 +15,53 @@ export default function Categories() {
   const [user] = useAuthState(auth);
   useEffect(() => {
     setLoading(true);
-    getDiaries(user.email).then(res => {
-      if(res) {
-        setDiaries(res.map(doc => ({...doc.data(), uid: doc.id})));
+    getDiaries(user.email).then((res) => {
+      if (res) {
+        setDiaries(res.map((doc) => ({ ...doc.data(), uid: doc.id })));
       }
       setLoading(false);
     });
-  }, [user])
-  
+  }, [user]);
+
   return (
-    <div className='site-content'>
-      {loading && <LoadingService/>}
-      <div className='container'>
-        <div className='diary-list flex-box flex-box-3i flex-space-30'>
+    <div className="site-content categories">
+      {loading && <LoadingService />}
+      <div className="container">
+        <div className="diary-list flex-box flex-box-3i flex-space-20">
           {diaries.length === 0 && <h2>Nhóc chưa tạo nhật ký nào hết</h2>}
-          {diaries.length > 0 && diaries.map((diary, index) => 
-          <div className='diary-item' key={index}>
-            <div className='diary-top'>
-              <p>{diary.statusMood}</p>
-            </div>
-            <div className='diary-content line-clamp line-clamp-3'>
-              <div dangerouslySetInnerHTML={{__html: diary.content}}></div>
-            </div>
-            <div className='diary-bottom'>
-              <p>{diary.nameUser}</p>
-              <Link to={`/single-diary/${diary.uid}`}>read more</Link>
-            </div>
-          </div>)}
+          {diaries.length > 0 &&
+            diaries.map((diary, index) => (
+              <div className="diary-item" key={index}>
+                <div className="diary-single">
+                  <div className="diary-top flex-box">
+                    <p>{diary.statusMood}</p>
+                    <div className="diary-action flex-box">
+                      <BorderColorIcon/>
+                      <DeleteIcon/>
+                    </div>
+                  </div>
+                  <div className="diary-content line-clamp line-clamp-4">
+                    <div
+                      dangerouslySetInnerHTML={{ __html: diary.content }}
+                    ></div>
+                  </div>
+                  <div className="diary-bottom flex-box">
+                    <Link to="/profile" className="diary-author flex-box">
+                      <Avatar
+                        alt="fwn12tt"
+                        src={diary.userUrl}
+                        sx={{ width: 35, height: 35 }}
+                        className="diary-author-avatar"
+                      />
+                      <p className="diary-author-name">{diary.userName}</p>
+                    </Link>
+                    <Link to={`/single-diary/${diary.uid}`}>read more</Link>
+                  </div>
+                </div>
+              </div>
+            ))}
         </div>
       </div>
     </div>
-  )
+  );
 }

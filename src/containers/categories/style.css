@@ -1,0 +1,16 @@
+.categories .diary-single {
+ background-color: none;
+ padding: 10px;
+ border: 1px solid var(--color-primary);
+ box-shadow: 5px 5px 5px 0px var(--color-primary);
+}
+.diary-bottom,
+.diary-top{
+ justify-content: space-between;
+ align-items: center;
+}
+@media (max-width:767px) {
+ .categories .diary-list>* {
+  width: 50%;
+ }
+}

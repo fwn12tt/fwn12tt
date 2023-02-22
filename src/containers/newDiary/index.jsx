@@ -22,6 +22,7 @@ export default function NewDiary() {
   const [isValidSave, setIsValidSave] = useState(false);
   const [textMood, setTextMood] = useState(CONSTANTS.TEXT_HAPPY);
   const [user] = useAuthState(auth);
+  console.log(user);
   const [uid, setUid] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -67,12 +68,12 @@ export default function NewDiary() {
     inputProps: { "aria-label": item },
   });
 
-  const onSaveDiary = (event, uidUser, emailUser, nameUser, content, statusMood) => {
+  const onSaveDiary = (event, userUid, userEmail, userName, userUrl, content, statusMood) => {
     event.preventDefault();
     let uidv4 = uuidv4();
     setLoading(true);
     if(!uid) {
-      createDiary(uidv4, uidUser, emailUser, nameUser, content, statusMood).then(res => {
+      createDiary(uidv4, userUid, userEmail, userName, userUrl, content, statusMood).then(res => {
         setUid(res.id);
         setLoading(false);
       });
@@ -153,7 +154,7 @@ export default function NewDiary() {
                   <Emoji unified="1f914" size="25" />
                 </div>
               </div>
-              {/* <h4 className="text-mood">{textMood}</h4> */}
+              <h4 className="text-mood">{textMood}</h4>
             </FormControl>
           </div>
           <ReactQuill
@@ -166,7 +167,7 @@ export default function NewDiary() {
           />
         </div>
         <div className="list-btn" style={{marginTop: "15px"}}>
-          <button className="btn-save-diary" disabled={!isValidSave} onClick={e => onSaveDiary(e, user.uid, user.email, user.displayName, content, status)}>
+          <button className="btn-save-diary" disabled={!isValidSave} onClick={e => onSaveDiary(e, user.uid, user.email, user.displayName, user.photoURL, content, status)}>
             Save
           </button>
           <button className="btn-save-diary" style={{marginLeft: "15px"}} onClick={e => onClear(e)}>
