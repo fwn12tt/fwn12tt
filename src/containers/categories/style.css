@@ -82,7 +82,48 @@
 .diary-bottom .diary-author:hover .diary-author-name {
  color: var(--color-secondary);
 }
-@media (min-width: 381px) and (max-width:575px) {
+.dialog-delete {
+ padding: 15px;
+}
+.dialog-delete h3 {
+ font-size: 18px;
+ font-weight: 600;
+ color: var(--color-secondary);
+ line-height: 1;
+}
+.dialog-delete .dialog-content {
+ padding: 15px 0;
+ margin: 15px 0;
+ border-top: 1px solid rgba(40, 84, 48, 0.5);
+ border-bottom: 1px solid rgba(40, 84, 48, 0.5);
+}
+.dialog-delete .dialog-content p {
+ font-size: 14px;
+ font-weight: 400;
+ line-height: 1.5;
+ color: #dc3545;
+}
+.dialog-bottom {
+ text-align: right;
+}
+.btn-action-dialog {
+ font-size: 14px;
+ font-weight: 500;
+ color: #fff;
+ border: 1px solid;
+ padding: 8px 15px;
+ border-radius: 4px;
+ text-transform: uppercase;
+ cursor: pointer;
+}
+.btn-cancel {
+ background-color: #dc3545;
+ margin-right: 10px;
+}
+.btn-agree {
+ background-color: var(--color-third);
+}
+@media (min-width: 421px) and (max-width:575px) {
  .diary-bottom {
   flex-direction: column;
  }
@@ -97,7 +138,7 @@
   margin-top: 5px;
  }
 }
-@media (max-width:380px) {
+@media (max-width:420px) {
  .categories .diary-list>* {
   width: 100%;
  }

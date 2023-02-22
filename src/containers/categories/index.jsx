@@ -1,27 +1,70 @@
 import React, { useState, useEffect } from "react";
 import "./style.css";
-import { getDiaries } from "../../core/service/diaryService";
+import { getDiaries, deleteDiary } from "../../core/service/diaryService";
 import { useAuthState } from "react-firebase-hooks/auth";
 import LoadingService from "../../core/common/loadingService";
 import { auth } from "../../firebase";
 import { Link } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import Pagination from "../../core/common/pagination/Pagination";
+import Dialog from "@mui/material/Dialog";
 
 export default function Categories() {
   const [diaries, setDiaries] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [uidDelete, setUidDelete] = useState("");
+  const [currentPage, setcurrentPage] = useState(1);
+  const [open, setOpen] = useState(false);
+  const [postPerPage] = useState(9);
   const [user] = useAuthState(auth);
-  useEffect(() => {
-    setLoading(true);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const onClickBtnDelete = (uid) => {
+    setUidDelete(uid);
+    handleClickOpen();
+  };
+  const getListDiaries = () => {
     getDiaries(user.email).then((res) => {
       if (res) {
         setDiaries(res.map((doc) => ({ ...doc.data(), uid: doc.id })));
       }
       setLoading(false);
     });
+  };
+  useEffect(() => {
+    setLoading(true);
+    getListDiaries();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
+
+  const onDeleteDiary = (e, uid) => {
+    e.preventDefault();
+    if (uid) {
+      handleClose();
+      setLoading(true);
+      deleteDiary(uid).then((res) => {
+        getListDiaries();
+        setLoading(false);
+        setUidDelete("");
+      });
+    }
+  };
+
+  //Get current post
+  const indexOfLastDiary = currentPage * postPerPage;
+  const indexOfFirstDiary = indexOfLastDiary - postPerPage;
+
+  //Change Pgae
+  const paginate = (pageNumber) => setcurrentPage(pageNumber);
 
   return (
     <div className="site-content categories">
@@ -30,38 +73,86 @@ export default function Categories() {
         <div className="diary-list flex-box flex-box-3i flex-space-20">
           {diaries.length === 0 && <h2>Nhóc chưa tạo nhật ký nào hết</h2>}
           {diaries.length > 0 &&
-            diaries.map((diary, index) => (
-              <div className="diary-item" key={index}>
-                <div className="diary-single">
-                  <div className="diary-top flex-box">
-                    <p>{diary.statusMood}</p>
-                    <div className="diary-action flex-box">
-                      <EditIcon/>
-                      <DeleteIcon/>
+            diaries
+              .slice(indexOfFirstDiary, indexOfLastDiary)
+              .map((diary, index) => (
+                <div className="diary-item" key={index}>
+                  <div className="diary-single">
+                    <div className="diary-top flex-box">
+                      <p>{diary.statusMood}</p>
+                      <div className="diary-action flex-box">
+                        <EditIcon />
+                        <DeleteIcon
+                          onClick={() => onClickBtnDelete(diary.uid)}
+                        />
+                      </div>
+                    </div>
+                    <div className="diary-content line-clamp line-clamp-4">
+                      <div
+                        dangerouslySetInnerHTML={{ __html: diary.content }}
+                      ></div>
+                    </div>
+                    <div className="diary-bottom flex-box">
+                      <Link to="/profile" className="diary-author flex-box">
+                        <Avatar
+                          alt="fwn12tt"
+                          src={diary.userUrl}
+                          sx={{ width: 30, height: 30 }}
+                          className="diary-author-avatar"
+                        />
+                        <p className="diary-author-name">{diary.userName}</p>
+                      </Link>
+                      <Link
+                        to={`/single-diary/${diary.uid}`}
+                        className="read-more"
+                      >
+                        read more
+                      </Link>
                     </div>
                   </div>
-                  <div className="diary-content line-clamp line-clamp-4">
-                    <div
-                      dangerouslySetInnerHTML={{ __html: diary.content }}
-                    ></div>
-                  </div>
-                  <div className="diary-bottom flex-box">
-                    <Link to="/profile" className="diary-author flex-box">
-                      <Avatar
-                        alt="fwn12tt"
-                        src={diary.userUrl}
-                        sx={{ width: 30, height: 30 }}
-                        className="diary-author-avatar"
-                      />
-                      <p className="diary-author-name">{diary.userName}</p>
-                    </Link>
-                    <Link to={`/single-diary/${diary.uid}`} className="read-more">read more</Link>
-                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
         </div>
+        {diaries.length > 0 && diaries.length > 9 && (
+          <Pagination
+            totalPost={diaries.length}
+            postPerPage={postPerPage}
+            currentPage={currentPage}
+            setPageNumber={paginate}
+          />
+        )}
       </div>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <div className="dialog-delete">
+          <div className="dialog-header">
+            <h3>Fwn12tt you want to delete this diary?</h3>
+          </div>
+          <div className="dialog-content">
+            <p>
+              {`Suy nghĩ kỹ trước khi xóa nhá Em Ngố. Xóa rồi là Anh không khôi phục lại cho Em được đâu đóaaaaaaa. Có một cách đó là Em viết lại =))).`}
+            </p>
+          </div>
+          <div className="dialog-bottom">
+            <button
+              className="btn-action-dialog btn-cancel"
+              onClick={handleClose}
+            >
+              Cancel
+            </button>
+            <button
+              className="btn-action-dialog btn-agree"
+              onClick={(e) => onDeleteDiary(e, uidDelete)}
+            >
+              Agree
+            </button>
+          </div>
+        </div>
+      </Dialog>
     </div>
   );
 }

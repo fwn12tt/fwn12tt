@@ -66,4 +66,14 @@ const getDiary = async (uid) => {
   }
 }
 
-export { createDiary, updateDiary, getDiaries, getDiary };
+const deleteDiary = async (uid) => {
+  try {
+    await deleteDoc(doc(db, 'diaries', uid)); 
+    toast.success("Delete diary successsssssssss ^-^");
+  } catch (error) {
+    console.log(error);
+    toast.error("Delete diary errorrrrrrr :(((");
+  }
+}
+
+export { createDiary, updateDiary, getDiaries, getDiary, deleteDiary };
