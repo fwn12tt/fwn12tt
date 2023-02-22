@@ -10,6 +10,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import Pagination from "../../core/common/pagination/Pagination";
 import Dialog from "@mui/material/Dialog";
+import imgA5 from "../../assets/images/a5.jpeg";
 
 export default function Categories() {
   const [diaries, setDiaries] = useState([]);
@@ -43,7 +44,7 @@ export default function Categories() {
   useEffect(() => {
     setLoading(true);
     getListDiaries();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   const onDeleteDiary = (e, uid) => {
@@ -70,8 +71,13 @@ export default function Categories() {
     <div className="site-content categories">
       {loading && <LoadingService />}
       <div className="container">
+        {diaries.length === 0 && (
+          <div className="empty-diary">
+            <h2>Em Ngố chưa viết một nhật ký nào hếtttttt</h2>
+            <img src={imgA5} alt="empty-diary" />
+          </div>
+        )}
         <div className="diary-list flex-box flex-box-3i flex-space-20">
-          {diaries.length === 0 && <h2>Nhóc chưa tạo nhật ký nào hết</h2>}
           {diaries.length > 0 &&
             diaries
               .slice(indexOfFirstDiary, indexOfLastDiary)
