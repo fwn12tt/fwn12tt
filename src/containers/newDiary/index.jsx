@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import ReactQuill from "react-quill";
 import Radio from "@mui/material/Radio";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -12,8 +12,12 @@ import { module, formats } from "./setup";
 import * as CONSTANTS from "./constants";
 import { auth } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { createDiary, updateDiary } from "../../core/service/diaryService";
-import { v4 as uuidv4} from 'uuid';
+import {
+  createDiary,
+  updateDiary,
+  getDiary,
+} from "../../core/service/diaryService";
+import { v4 as uuidv4 } from "uuid";
 import LoadingService from "../../core/common/loadingService";
 
 export default function NewDiary() {
@@ -22,18 +26,34 @@ export default function NewDiary() {
   const [isValidSave, setIsValidSave] = useState(false);
   const [textMood, setTextMood] = useState(CONSTANTS.TEXT_HAPPY);
   const [user] = useAuthState(auth);
-  console.log(user);
-  const [uid, setUid] = useState('');
+  const [uid, setUid] = useState("");
   const [loading, setLoading] = useState(false);
+  const location = useLocation();
 
   const onChange = (value) => {
     setContent(value);
-    if (value !== '' && value !== '<p><br></p>') {
+    if (value !== "" && value !== "<p><br></p>") {
       setIsValidSave(true);
     } else {
       setIsValidSave(false);
     }
   };
+
+  useEffect(() => {
+    if (location.state?.uid) {
+      setLoading(true);
+      getDiary(location.state?.uid).then((res) => {
+        setContent(res.data().content);
+        setUid(res.id);
+        setStatus(res.data().statusMood);
+        controlProps(res.data().statusMood);
+        setLoading(false);
+      });
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.state?.uid]);
+
   const onChangeStatus = (e) => {
     setStatus(e.target.value);
     switch (e.target.value) {
@@ -68,19 +88,35 @@ export default function NewDiary() {
     inputProps: { "aria-label": item },
   });
 
-  const onSaveDiary = (event, userUid, userEmail, userName, userUrl, content, statusMood) => {
+  const onSaveDiary = (
+    event,
+    userUid,
+    userEmail,
+    userName,
+    userUrl,
+    content,
+    statusMood
+  ) => {
     event.preventDefault();
     let uidv4 = uuidv4();
     setLoading(true);
-    if(!uid) {
-      createDiary(uidv4, userUid, userEmail, userName, userUrl, content, statusMood).then(res => {
+    if (!uid) {
+      createDiary(
+        uidv4,
+        userUid,
+        userEmail,
+        userName,
+        userUrl,
+        content,
+        statusMood
+      ).then((res) => {
         setUid(res.id);
         setLoading(false);
       });
-    }else {
-      updateDiary(uid, {content, statusMood}).then(res => {
+    } else {
+      updateDiary(uid, { content, statusMood }).then((res) => {
         setLoading(false);
-      })
+      });
     }
   };
   const onClear = (event) => {
@@ -91,10 +127,10 @@ export default function NewDiary() {
     controlProps("happy");
     setContent("");
     setIsValidSave(false);
-  }
+  };
   return (
     <div className="site-content">
-      {loading && <LoadingService/>}
+      {loading && <LoadingService />}
       <div className="container">
         <div className="content-edit">
           <div className="choose-mood">
@@ -166,14 +202,36 @@ export default function NewDiary() {
             formats={formats}
           />
         </div>
-        <div className="list-btn" style={{marginTop: "15px"}}>
-          <button className="btn-save-diary" disabled={!isValidSave} onClick={e => onSaveDiary(e, user.uid, user.email, user.displayName, user.photoURL, content, status)}>
+        <div className="list-btn" style={{ marginTop: "15px" }}>
+          <button
+            className="btn-save-diary"
+            disabled={!isValidSave}
+            onClick={(e) =>
+              onSaveDiary(
+                e,
+                user.uid,
+                user.email,
+                user.displayName,
+                user.photoURL,
+                content,
+                status
+              )
+            }
+          >
             Save
           </button>
-          <button className="btn-save-diary" style={{marginLeft: "15px"}} onClick={e => onClear(e)}>
+          <button
+            className="btn-save-diary"
+            style={{ marginLeft: "15px" }}
+            onClick={(e) => onClear(e)}
+          >
             Clear
           </button>
-          {uid && <Link className="btn-view-single-diary" to={`/single-diary/${uid}`}>View Diary</Link>}
+          {uid && (
+            <Link className="btn-view-single-diary" to={`/single-diary/${uid}`}>
+              View Diary
+            </Link>
+          )}
         </div>
       </div>
     </div>

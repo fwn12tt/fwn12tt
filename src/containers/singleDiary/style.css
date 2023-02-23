@@ -2,3 +2,69 @@
  letter-spacing: 0.03rem;
  line-height: 1.8;
 }
+.single-diary-author {
+ margin-top: 25px;
+ padding: 16px 0 8px  0;
+ justify-content: center;
+ align-items: center;
+ flex-direction: column;
+ text-transform: uppercase;
+ border: 1px solid rgba(40, 84, 48, 0.5);
+ border-radius: 10px;
+ max-width: 450px;
+ margin-left: auto;
+ margin-right: auto;
+ cursor: pointer;
+ transition: all 0.3s;
+}
+.single-diary-author:hover {
+ box-shadow: 10px 10px 10px 0px var(--color-fifth);
+ transform: translateY(-10px);
+}
+.single-diary-author .single-author {
+ flex-direction: column;
+ text-decoration: none;
+ align-items: center;
+}
+.single-diary-author .single-author img {
+ width: 80px;
+ height: 80px;
+ border-radius: 50%;
+ object-fit: cover;
+ margin-bottom: 12px;
+ animation: cricle 3.5s linear infinite;
+}
+@keyframes cricle {
+ 0%{
+     transform: rotate(0);
+ }100% {
+     transform: rotate(360deg);
+ }
+}
+.single-diary-author .single-author p {
+ font-size: 16px;
+ font-weight: 500;
+ line-height: 1;
+ color: var(--color-third);
+}
+.single-diary-author-status {
+ font-size: 14px;
+ font-weight: 500;
+ color: var(--color-fourth);
+ line-height: 1;
+ margin-top: 10px;
+ padding-top: 5px;
+ border-top: 1px solid rgba(40, 84, 48, 0.3);
+}
+.related-post {
+ margin-top: 30px;
+}
+@media (max-width:575px) {
+ .single-diary-author .single-author img {
+  width: 65px;
+  height: 65px;
+ }
+ .single-diary-author .single-author p {
+  font-size: 15px;
+ }
+}

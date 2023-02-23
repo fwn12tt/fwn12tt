@@ -4,7 +4,7 @@ import { getDiaries, deleteDiary } from "../../core/service/diaryService";
 import { useAuthState } from "react-firebase-hooks/auth";
 import LoadingService from "../../core/common/loadingService";
 import { auth } from "../../firebase";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -20,6 +20,7 @@ export default function Categories() {
   const [open, setOpen] = useState(false);
   const [postPerPage] = useState(9);
   const [user] = useAuthState(auth);
+  const navigate = useNavigate();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -87,7 +88,7 @@ export default function Categories() {
                     <div className="diary-top flex-box">
                       <p>{diary.statusMood}</p>
                       <div className="diary-action flex-box">
-                        <EditIcon />
+                        <EditIcon onClick={() => navigate("/new-diary", {state: {uid: diary.uid}})}/>
                         <DeleteIcon
                           onClick={() => onClickBtnDelete(diary.uid)}
                         />
