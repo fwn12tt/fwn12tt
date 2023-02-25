@@ -8,6 +8,7 @@ import "react-quill/dist/quill.snow.css";
 import { getDiary, getDiaries } from "../../core/service/diaryService";
 import { auth } from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
+import Like from "../../assets/images/like.jpeg";
 import "./style.css";
 
 export default function SingleDiary() {
@@ -36,37 +37,46 @@ export default function SingleDiary() {
     <div className="site-content">
       {loading && <LoadingService />}
       <div className="container">
-        <div className="content-diary">
-          <div dangerouslySetInnerHTML={{ __html: diary?.content }}></div>
-          <div className="single-diary-author flex-box">
-            <Link to="/profile" className="flex-box single-author">
-              <img src={diary?.userUrl} alt={diary?.userName} />
-              <p>{diary?.userName}</p>
-            </Link>
-            <p className="single-diary-author-status">{diary?.statusMood}</p>
+        {!diary && !diaries.length > 0 && (
+          <div className="empty">
+            <img src={Like} alt="empty" />
           </div>
-        </div>
-        <div className="related-post">
-          <h3 className="related-title">FWN12TT may also be interested</h3>
-          <div className="related-list flex-box flex-box-4i flex-space-20">
-            {diaries.length > 0 &&
-              diaries.slice(0, 4).map((doc, index) => (
-                <div className="related-item" key={index}>
-                  <div className="related-single">
-                    <div className="related-content line-clamp line-clamp-6">
-                      <div
-                        dangerouslySetInnerHTML={{ __html: doc.content }}
-                      ></div>
-                    </div>
-                    <div className="related-bottom flex-box">
-                      <p>{doc.statusMood}</p>
-                      <Link to={`/single-diary/${doc.uid}`}>read more</Link>
+        )}
+        {diary && (
+          <div className="content-diary">
+            <div dangerouslySetInnerHTML={{ __html: diary?.content }}></div>
+            <div className="single-diary-author flex-box">
+              <Link to="/profile" className="flex-box single-author">
+                <img src={diary?.userUrl} alt={diary?.userName} />
+                <p>{diary?.userName}</p>
+              </Link>
+              <p className="single-diary-author-status">{diary?.statusMood}</p>
+            </div>
+          </div>
+        )}
+        {diaries.length > 0 && (
+          <div className="related-post">
+            <h3 className="related-title">Fwn12tt may also be interested</h3>
+            <div className="related-list flex-box flex-box-4i flex-space-20">
+              {diaries.length > 0 &&
+                diaries.slice(0, 4).map((doc, index) => (
+                  <div className="related-item" key={index}>
+                    <div className="related-single">
+                      <div className="related-content line-clamp line-clamp-6">
+                        <div
+                          dangerouslySetInnerHTML={{ __html: doc.content }}
+                        ></div>
+                      </div>
+                      <div className="related-bottom flex-box">
+                        <p className="status">{doc.statusMood}</p>
+                        <Link to={`/single-diary/${doc.uid}`}>read more</Link>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
