@@ -12,13 +12,9 @@ import {
 } from 'firebase/auth';
 
 import {
- getFirestore,
- query,
- getDocs,
- collection,
- where,
- addDoc,
+ getFirestore
 } from "firebase/firestore";
+import { getStorage } from 'firebase/storage';
 import toast from 'react-hot-toast';
 
 const firebaseConfig = {
@@ -35,6 +31,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+const storage = getStorage(app);
 
 const googleProvider = new GoogleAuthProvider();
 const gitHubProvider = new GithubAuthProvider();
@@ -101,5 +98,6 @@ export {
  registerWithEmailAndPassword,
  sendPasswordReset,
  logout,
+ storage
 };
 

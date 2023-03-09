@@ -1,0 +1,72 @@
+.gallery-header {
+ justify-content: space-between;
+ margin-bottom: 20px;
+ align-items: center;
+}
+.gallery-title {
+ font-size: 24px;
+ font-weight: 700;
+ line-height: 1;
+ color: var(--color-secondary);
+}
+.btn-upload {
+ background-color: var(--color-secondary);
+ color: #fff;
+ font-size: 14px;
+ font-weight: 500;
+ padding: 8px 15px;
+ border: 1px solid var(--color-secondary);
+ border-radius: 5px;
+ cursor: pointer;
+}
+.preview-file {
+ margin-top: 10px !important;
+ margin: -5px;
+ height: auto;
+ max-height: 400px;
+ overflow-y: scroll;
+}
+.input-upload {
+ width: fit-content;
+ height: 30px;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ cursor: pointer;
+ background: none;
+ border: none;
+}
+.input-upload input {
+ border: none;
+ cursor: pointer;
+}
+.img-item {
+ padding: 5px;
+}
+.preview-file img {
+ aspect-ratio: 1/1;
+ object-fit: cover;
+ width: 100%;
+ border: 1px solid var(--color-primary);
+ border-radius: 5px;
+}
+.btn-upload:disabled {
+ background-color: var(--color-primary);
+ cursor: not-allowed;
+}
+.gallery-item img{
+ width: 100%;
+ aspect-ratio: 1/1;
+ object-fit: cover;
+}
+@media (max-width:575px) {
+ .gallery-title {
+  font-size: 20px;
+ }
+ .btn-upload {
+  color: #fff;
+  font-size: 13px;
+  font-weight: 400;
+  padding: 6px 10px;
+ }
+}
