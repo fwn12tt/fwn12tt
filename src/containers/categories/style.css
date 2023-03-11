@@ -166,6 +166,7 @@
 .empty-diary img {
  width: 540px;
  height: 600px;
+ object-fit: cover;
 }
 
 @media (min-width: 421px) and (max-width:575px) {
