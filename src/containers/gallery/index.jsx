@@ -141,10 +141,10 @@ export default function Gallery() {
   const imgAction = (action) => {
     let index = dataImageView.index;
     if(action === 'next') {
-      setDataImageView({img: listUrl[index + 1], index: index + 1})
+      setDataImageView({img: index === listUrl.length - 1 ? listUrl[0] : listUrl[index + 1], index: index === listUrl.length - 1 ? 0 : index + 1})
     }
     if(action === 'prev') {
-      setDataImageView({img: listUrl[index - 1], index: index - 1})
+      setDataImageView({img: index === 0 ? listUrl[listUrl.length - 1] : listUrl[index - 1], index: index === 0 ? listUrl.length - 1 : index - 1})
     }
     if(!action) {
       setDataImageView({img: '', index: 0})

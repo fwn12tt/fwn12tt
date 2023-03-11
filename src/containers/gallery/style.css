@@ -213,6 +213,12 @@ progress::-webkit-progress-value {
  align-items: center;
  justify-content: center;
 }
+@media (min-width:576px) {
+ .gallery-item .cover-bg,
+ .action-gallery {
+  display: none;
+ }
+}
 
 @media (max-width:575px) {
  .gallery-title {
