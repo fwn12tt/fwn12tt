@@ -213,10 +213,15 @@ progress::-webkit-progress-value {
  align-items: center;
  justify-content: center;
 }
-@media (min-width:576px) {
- .gallery-item .cover-bg,
+@media (max-width:767px) {
  .action-gallery {
   display: none;
+ }
+ .gallery-item .cover-bg {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: all;
+  background-color: transparent;
  }
 }
 
