@@ -155,7 +155,64 @@ progress::-webkit-progress-value {
  width: 300px;
  aspect-ratio: 1/1;
  object-fit: cover;
+}
+.view-full-image {
+ position: fixed;
+ top: 0;
+ left: 0;
+ right: 0;
+ bottom: 0;
+ background-color: rgba(40, 84, 48, 0.8);
+ z-index: 3;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+
 } 
+.view-full-image img {
+ width: auto;
+ height: auto;
+ max-width: 80%;
+ max-height: 80%;
+ object-fit: cover;
+ z-index: 4;
+}
+.btn-action {
+ padding: 5px 10px;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ cursor: pointer;
+ background-color: #fff;
+ border: 1px solid var(--color-primary);
+ border-radius: 10px;
+ z-index: 5;
+}
+.btn-action svg {
+ fill: var(--color-primary);
+}
+.btn-action-left {
+ margin-right: -20px;
+}
+.btn-action-right {
+ margin-left: -20px;
+}
+.btn-action-close {
+ position: absolute;
+ top: 15px;
+ bottom: auto;
+ right: 15px;
+ left: auto;
+ width: 25px;
+ height: 25px;
+ border: 1px solid var(--color-secondary);
+ border-radius: 50%;
+ z-index: 3;
+ cursor: pointer;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+}
 
 @media (max-width:575px) {
  .gallery-title {

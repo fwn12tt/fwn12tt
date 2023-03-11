@@ -18,6 +18,9 @@ import Loading from "../../core/common/loadingService";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase";
 import Smile from "../../assets/images/smile.jpeg";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import CloseIcon from '@mui/icons-material/Close';
 
 export default function Gallery() {
   const [open, setOpen] = useState(false);
@@ -28,7 +31,8 @@ export default function Gallery() {
   const  [loading, setLoading] = useState(false);
   const [user] = useAuthState(auth);
   const [classFlexbox, setClassFlexbox] = useState('');
-  const [dataDelete, setDataDelete] = useState(null)
+  const [dataDelete, setDataDelete] = useState(null);
+  const [dataImageView, setDataImageView] = useState({img: '', index: 0});
 
   useEffect(() => {
     getAllImages();
@@ -62,6 +66,7 @@ export default function Gallery() {
   const handleCloseDelete = () => {
     setOpenDelete(false)
   }
+
   const getAllImages = async () => {
     setListUrl([])
     setLoading(true)
@@ -128,29 +133,23 @@ export default function Gallery() {
     })
   };
 
-  const handleDownload = (url) => {
-    console.log(url);
-    const img = new Image();
-    img.crossOrigin = "anonymous";
-    img.src = url;
-    img.onload = () => {
-      // create Canvas
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
-      canvas.width = img.width;
-      canvas.height = img.height;
-      ctx.drawImage(img, 0, 0);
-      // create <a> tag
-      const a = document.createElement("a");
-      a.download = "download.png";
-      a.href = canvas.toDataURL("image/png");
-      a.click();
-    }
+  const handleFullImage = (item, index) => {
+    console.log(item, index);
+    setDataImageView({img: item, index: index})
   };
 
-  const handleFullImage = (url) => {
-    console.log("url full image:", url);
-  };
+  const imgAction = (action) => {
+    let index = dataImageView.index;
+    if(action === 'next') {
+      setDataImageView({img: listUrl[index + 1], index: index + 1})
+    }
+    if(action === 'prev') {
+      setDataImageView({img: listUrl[index - 1], index: index - 1})
+    }
+    if(!action) {
+      setDataImageView({img: '', index: 0})
+    }
+  }
 
   if (!user) {
     return <Loading />;
@@ -158,6 +157,14 @@ export default function Gallery() {
   return (
     <div className="site-content">
       {loading && <Loading/>}
+      {dataImageView.img && 
+        <div className="view-full-image">
+          <button className="btn-action btn-action-left" onClick={() => imgAction('prev')}><ArrowBackIcon/></button>
+          <img src={dataImageView.img?.url} alt="view-full"/>
+          <button className="btn-action btn-action-right" onClick={() => imgAction('next')}><ArrowForwardIcon/></button>
+          <button className="btn-action-close" onClick={() => imgAction('')}><CloseIcon/></button>
+        </div>
+      }
       <div className="container">
         <div className="gallery-wrap">
           <div className="gallery-header flex-box">
@@ -182,12 +189,9 @@ export default function Gallery() {
                     <img src={item.url} alt="gallery" />
                     <div
                       className="cover-bg"
-                      onClick={() => handleFullImage(item.url)}
+                      onClick={() => handleFullImage(item, index)}
                     ></div>
                     <div className="action-gallery">
-                      <button onClick={() => handleDownload(item.url)}>
-                        <FileDownloadIcon />
-                      </button>
                       <button onClick={() => clickDeleteImage(item)}>
                         <DeleteIcon />
                       </button>
@@ -221,9 +225,8 @@ export default function Gallery() {
             <div className={`preview-file flex-box ${classFlexbox}`}>
               {images &&
                 images.map((image, index) => (
-                  <div className="img-item">
+                  <div className="img-item" key={index}>
                     <img
-                      key={index}
                       src={URL.createObjectURL(image)}
                       alt="preview"
                     />
@@ -259,6 +262,7 @@ export default function Gallery() {
             <h3 className="dialog-header-title">Delete Image</h3>
           </div>
           <div className="dialog-content dialog-delete-image">
+            <h3 style={{marginBottom: '15px'}}>Ảnh thì xóa thoải mái nhá Em ngố {':))'}</h3>
             {dataDelete && <img src={dataDelete.url} alt="gallery-delete"/> }
           </div>
           <div className="dialog-bottom">
