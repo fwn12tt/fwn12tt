@@ -71,13 +71,13 @@ export default function Gallery() {
     setListUrl([])
     setLoading(true)
     await listAll(ref(storage, `gallery_${user.email}`)).then((res) => {
+      setLoading(false)
       res.items.forEach((item) => {
         getDownloadURL(ref(storage, item.fullPath)).then((url) => {
           setListUrl((prevState) => [
             ...prevState,
             { url, fullPath: item.fullPath },
           ]);
-          setLoading(false)
         });
       });
     });
