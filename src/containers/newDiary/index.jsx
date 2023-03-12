@@ -19,8 +19,9 @@ import {
 } from "../../core/service/diaryService";
 import { v4 as uuidv4 } from "uuid";
 import LoadingService from "../../core/common/loadingService";
+import { connect } from "react-redux";
 
-export default function NewDiary() {
+const NewDiary = ({ codeDefault }) => {
   const [content, setContent] = useState("");
   const [status, setStatus] = useState("happy");
   const [isValidSave, setIsValidSave] = useState(false);
@@ -131,109 +132,124 @@ export default function NewDiary() {
   return (
     <div className="site-content">
       {loading && <LoadingService />}
-      <div className="container">
-        <div className="content-edit">
-          <div className="choose-mood">
-            <FormControl>
-              <div>
-                <h2>Choose mood</h2>
-              </div>
-              <div className="list-mood flex-box">
-                <div className="flex-box">
-                  <FormControlLabel
-                    value="happy"
-                    control={
-                      <Radio {...controlProps("happy")} color="success" />
-                    }
-                    label={`Happy`}
-                  />
-                  <Emoji unified="1f60a" size="25" />
+      {!codeDefault && <div className="container">
+      <h3 className="not-enter-code">You have not entered the verification code <Link to="/">Go back home</Link></h3></div>}
+      {codeDefault && (
+        <div className="container">
+          <div className="content-edit">
+            <div className="choose-mood">
+              <FormControl>
+                <div>
+                  <h2>Choose mood</h2>
                 </div>
-                <div className="flex-box">
-                  <FormControlLabel
-                    value="funny"
-                    control={<Radio {...controlProps("funny")} />}
-                    label={`Funny`}
-                  />
-                  <Emoji unified="1f60b" size="25" />
+                <div className="list-mood flex-box">
+                  <div className="flex-box">
+                    <FormControlLabel
+                      value="happy"
+                      control={
+                        <Radio {...controlProps("happy")} color="success" />
+                      }
+                      label={`Happy`}
+                    />
+                    <Emoji unified="1f60a" size="25" />
+                  </div>
+                  <div className="flex-box">
+                    <FormControlLabel
+                      value="funny"
+                      control={<Radio {...controlProps("funny")} />}
+                      label={`Funny`}
+                    />
+                    <Emoji unified="1f60b" size="25" />
+                  </div>
+                  <div className="flex-box">
+                    <FormControlLabel
+                      value="sad"
+                      control={<Radio {...controlProps("sad")} />}
+                      label={`Sad`}
+                    />
+                    <Emoji unified="2639-fe0f" size="25" />
+                  </div>
+                  <div className="flex-box">
+                    <FormControlLabel
+                      value="angry"
+                      control={<Radio {...controlProps("angry")} />}
+                      label={`Angry`}
+                    />
+                    <Emoji unified="1f621" size="25" />
+                  </div>
+                  <div className="flex-box">
+                    <FormControlLabel
+                      value="love"
+                      control={<Radio {...controlProps("love")} />}
+                      label={`Love`}
+                    />
+                    <Emoji unified="1f970" size="25" />
+                  </div>
+                  <div className="flex-box">
+                    <FormControlLabel
+                      value="others"
+                      control={<Radio {...controlProps("others")} />}
+                      label={`Others`}
+                    />
+                    <Emoji unified="1f914" size="25" />
+                  </div>
                 </div>
-                <div className="flex-box">
-                  <FormControlLabel
-                    value="sad"
-                    control={<Radio {...controlProps("sad")} />}
-                    label={`Sad`}
-                  />
-                  <Emoji unified="2639-fe0f" size="25" />
-                </div>
-                <div className="flex-box">
-                  <FormControlLabel
-                    value="angry"
-                    control={<Radio {...controlProps("angry")} />}
-                    label={`Angry`}
-                  />
-                  <Emoji unified="1f621" size="25" />
-                </div>
-                <div className="flex-box">
-                  <FormControlLabel
-                    value="love"
-                    control={<Radio {...controlProps("love")} />}
-                    label={`Love`}
-                  />
-                  <Emoji unified="1f970" size="25" />
-                </div>
-                <div className="flex-box">
-                  <FormControlLabel
-                    value="others"
-                    control={<Radio {...controlProps("others")} />}
-                    label={`Others`}
-                  />
-                  <Emoji unified="1f914" size="25" />
-                </div>
-              </div>
-              <h4 className="text-mood">{textMood}</h4>
-            </FormControl>
+                <h4 className="text-mood">{textMood}</h4>
+              </FormControl>
+            </div>
+            <ReactQuill
+              theme="snow"
+              value={content}
+              onChange={onChange}
+              placeholder={"This is just for Fwn12tt..."}
+              modules={module}
+              formats={formats}
+            />
           </div>
-          <ReactQuill
-            theme="snow"
-            value={content}
-            onChange={onChange}
-            placeholder={"This is just for Fwn12tt..."}
-            modules={module}
-            formats={formats}
-          />
+          <div className="list-btn" style={{ marginTop: "15px" }}>
+            <button
+              className="btn-save-diary"
+              disabled={!isValidSave}
+              onClick={(e) =>
+                onSaveDiary(
+                  e,
+                  user.uid,
+                  user.email,
+                  user.displayName,
+                  user.photoURL,
+                  content,
+                  status
+                )
+              }
+            >
+              Save
+            </button>
+            <button
+              className="btn-save-diary"
+              style={{ marginLeft: "15px" }}
+              onClick={(e) => onClear(e)}
+            >
+              Clear
+            </button>
+            {uid && (
+              <Link
+                className="btn-view-single-diary"
+                to={`/single-diary/${uid}`}
+              >
+                View Diary
+              </Link>
+            )}
+          </div>
         </div>
-        <div className="list-btn" style={{ marginTop: "15px" }}>
-          <button
-            className="btn-save-diary"
-            disabled={!isValidSave}
-            onClick={(e) =>
-              onSaveDiary(
-                e,
-                user.uid,
-                user.email,
-                user.displayName,
-                user.photoURL,
-                content,
-                status
-              )
-            }
-          >
-            Save
-          </button>
-          <button
-            className="btn-save-diary"
-            style={{ marginLeft: "15px" }}
-            onClick={(e) => onClear(e)}
-          >
-            Clear
-          </button>
-          {uid && (
-            <Link className="btn-view-single-diary" to={`/single-diary/${uid}`}>
-              View Diary
-            </Link>
-          )}
-        </div>
-      </div>
+      )}
     </div>
   );
-}
+};
+
+const mapStateToProps = (state) => {
+  return {
+    codeDefault: state.codeReducer.codeConfirm,
+  };
+};
+
+export default connect(mapStateToProps)(NewDiary);

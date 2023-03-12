@@ -11,8 +11,9 @@ import EditIcon from "@mui/icons-material/Edit";
 import Pagination from "../../core/common/pagination/Pagination";
 import Dialog from "@mui/material/Dialog";
 import imgA5 from "../../assets/images/a5.jpeg";
+import { connect } from "react-redux";
 
-export default function Categories() {
+const Categories = ({ codeDefault }) => {
   const [diaries, setDiaries] = useState([]);
   const [loading, setLoading] = useState(false);
   const [uidDelete, setUidDelete] = useState("");
@@ -43,8 +44,10 @@ export default function Categories() {
     });
   };
   useEffect(() => {
-    setLoading(true);
-    getListDiaries();
+    if (codeDefault) {
+      setLoading(true);
+      getListDiaries();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
@@ -71,64 +74,80 @@ export default function Categories() {
   return (
     <div className="site-content categories">
       {loading && <LoadingService />}
-      <div className="container">
-        {diaries.length === 0 && (
-          <div className="empty-diary">
-            <h2>Em Ngố chưa viết một nhật ký nào hếtttttt</h2>
-            <img src={imgA5} alt="empty-diary" />
-          </div>
-        )}
-        <div className="diary-list flex-box flex-box-3i flex-space-20">
-          {diaries.length > 0 &&
-            diaries
-              .slice(indexOfFirstDiary, indexOfLastDiary)
-              .map((diary, index) => (
-                <div className="diary-item" key={index}>
-                  <div className="diary-single">
-                    <div className="diary-top flex-box">
-                      <p>{diary.statusMood}</p>
-                      <div className="diary-action flex-box">
-                        <EditIcon onClick={() => navigate("/new-diary", {state: {uid: diary.uid}})}/>
-                        <DeleteIcon
-                          onClick={() => onClickBtnDelete(diary.uid)}
-                        />
+      {!codeDefault && (
+        <div className="container">
+          <h3 className="not-enter-code">
+            You have not entered the verification code{" "}
+            <Link to="/">Go back home</Link>
+          </h3>
+        </div>
+      )}
+      {codeDefault && (
+        <div className="container">
+          {diaries.length === 0 && (
+            <div className="empty-diary">
+              <h2>Em Ngố chưa viết một nhật ký nào hếtttttt</h2>
+              <img src={imgA5} alt="empty-diary" />
+            </div>
+          )}
+          <div className="diary-list flex-box flex-box-3i flex-space-20">
+            {diaries.length > 0 &&
+              diaries
+                .slice(indexOfFirstDiary, indexOfLastDiary)
+                .map((diary, index) => (
+                  <div className="diary-item" key={index}>
+                    <div className="diary-single">
+                      <div className="diary-top flex-box">
+                        <p>{diary.statusMood}</p>
+                        <div className="diary-action flex-box">
+                          <EditIcon
+                            onClick={() =>
+                              navigate("/new-diary", {
+                                state: { uid: diary.uid },
+                              })
+                            }
+                          />
+                          <DeleteIcon
+                            onClick={() => onClickBtnDelete(diary.uid)}
+                          />
+                        </div>
+                      </div>
+                      <div className="diary-content line-clamp line-clamp-4">
+                        <div
+                          dangerouslySetInnerHTML={{ __html: diary.content }}
+                        ></div>
+                      </div>
+                      <div className="diary-bottom flex-box">
+                        <Link to="/profile" className="diary-author flex-box">
+                          <Avatar
+                            alt="fwn12tt"
+                            src={diary.userUrl}
+                            sx={{ width: 30, height: 30 }}
+                            className="diary-author-avatar"
+                          />
+                          <p className="diary-author-name">{diary.userName}</p>
+                        </Link>
+                        <Link
+                          to={`/single-diary/${diary.uid}`}
+                          className="read-more"
+                        >
+                          read more
+                        </Link>
                       </div>
                     </div>
-                    <div className="diary-content line-clamp line-clamp-4">
-                      <div
-                        dangerouslySetInnerHTML={{ __html: diary.content }}
-                      ></div>
-                    </div>
-                    <div className="diary-bottom flex-box">
-                      <Link to="/profile" className="diary-author flex-box">
-                        <Avatar
-                          alt="fwn12tt"
-                          src={diary.userUrl}
-                          sx={{ width: 30, height: 30 }}
-                          className="diary-author-avatar"
-                        />
-                        <p className="diary-author-name">{diary.userName}</p>
-                      </Link>
-                      <Link
-                        to={`/single-diary/${diary.uid}`}
-                        className="read-more"
-                      >
-                        read more
-                      </Link>
-                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+          </div>
+          {diaries.length > 0 && diaries.length > 9 && (
+            <Pagination
+              totalPost={diaries.length}
+              postPerPage={postPerPage}
+              currentPage={currentPage}
+              setPageNumber={paginate}
+            />
+          )}
         </div>
-        {diaries.length > 0 && diaries.length > 9 && (
-          <Pagination
-            totalPost={diaries.length}
-            postPerPage={postPerPage}
-            currentPage={currentPage}
-            setPageNumber={paginate}
-          />
-        )}
-      </div>
+      )}
       <Dialog
         open={open}
         onClose={handleClose}
@@ -162,4 +181,11 @@ export default function Categories() {
       </Dialog>
     </div>
   );
-}
+};
+const mapStateToProps = (state) => {
+  return {
+    codeDefault: state.codeReducer.codeConfirm,
+  };
+};
+
+export default connect(mapStateToProps)(Categories);

@@ -197,22 +197,34 @@ progress::-webkit-progress-value {
 .btn-action-right {
  margin-left: -20px;
 }
-.btn-action-close {
+.action-full-image {
  position: absolute;
  top: 15px;
  bottom: auto;
  right: 15px;
  left: auto;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ z-index: 3;
+}
+.btn-action-image {
  width: 25px;
  height: 25px;
  border: 1px solid var(--color-secondary);
  border-radius: 50%;
- z-index: 3;
  cursor: pointer;
  display: flex;
  align-items: center;
  justify-content: center;
 }
+.btn-action-image svg {
+ height: 16px;
+}
+.btn-action-image-close {
+ margin-left: 8px;
+}
+
 @media (max-width:767px) {
  .action-gallery {
   display: none;

@@ -7,71 +7,74 @@ import {
   uploadBytesResumable,
   listAll,
   getDownloadURL,
-  deleteObject
+  deleteObject,
 } from "firebase/storage";
 import toast from "react-hot-toast";
 import { uniqueArrayObject } from "../../core/utils/uniqueArray";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import DeleteIcon from "@mui/icons-material/Delete";
-import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import Loading from "../../core/common/loadingService";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase";
 import Smile from "../../assets/images/smile.jpeg";
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import CloseIcon from '@mui/icons-material/Close';
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import CloseIcon from "@mui/icons-material/Close";
+import { connect } from 'react-redux';
+import { Link } from "react-router-dom";
 
-export default function Gallery() {
+const Gallery = ({codeDefault}) => {
   const [open, setOpen] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const [images, setImages] = useState([]);
   const [progress, setProgress] = useState(0);
   const [listUrl, setListUrl] = useState([]);
-  const  [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [user] = useAuthState(auth);
-  const [classFlexbox, setClassFlexbox] = useState('');
+  const [classFlexbox, setClassFlexbox] = useState("");
   const [dataDelete, setDataDelete] = useState(null);
-  const [dataImageView, setDataImageView] = useState({img: '', index: 0});
+  const [dataImageView, setDataImageView] = useState({ img: "", index: 0 });
 
   useEffect(() => {
-    getAllImages();
+    if(codeDefault) {
+      getAllImages();
+    }
   }, []);
 
   const onChangeUpload = (event) => {
-    if(event.target.files.length === 2) {
-      setClassFlexbox('flex-box-2i')
-    }else if(event.target.files.length > 2) {
-      setClassFlexbox('flex-box-3i')
-    }else {
-      setClassFlexbox('')
+    if (event.target.files.length === 2) {
+      setClassFlexbox("flex-box-2i");
+    } else if (event.target.files.length > 2) {
+      setClassFlexbox("flex-box-3i");
+    } else {
+      setClassFlexbox("");
     }
     setImages(Object.values(event.target.files));
   };
 
   const handleClickOpen = () => {
     setImages([]);
-    setProgress(0)
+    setProgress(0);
     setOpen(true);
   };
 
   const handleClickOpenDelete = () => {
-    setOpenDelete(true)
-  }
+    setOpenDelete(true);
+  };
 
   const handleClose = () => {
     setOpen(false);
   };
 
   const handleCloseDelete = () => {
-    setOpenDelete(false)
-  }
+    setOpenDelete(false);
+  };
 
   const getAllImages = async () => {
-    setListUrl([])
-    setLoading(true)
+    setListUrl([]);
+    setLoading(true);
     await listAll(ref(storage, `gallery_${user.email}`)).then((res) => {
-      setLoading(false)
+      setLoading(false);
       res.items.forEach((item) => {
         getDownloadURL(ref(storage, item.fullPath)).then((url) => {
           setListUrl((prevState) => [
@@ -85,6 +88,7 @@ export default function Gallery() {
   const handleUpload = () => {
     const promises = [];
     // eslint-disable-next-line array-callback-return
+    setLoading(true);
     images.map((image) => {
       const uploadImage = ref(storage, `gallery_${user.email}/${image.name}`);
       const uploadTask = uploadBytesResumable(uploadImage, image);
@@ -105,68 +109,97 @@ export default function Gallery() {
 
     Promise.all(promises)
       .then(() => {
+        setLoading(false);
         toast.success("Upload images successsssssssss ^-^");
         getAllImages();
         handleClose();
       })
       .catch((err) => {
+        setLoading(false);
         toast.success("Upload images errorrrrrrr :(((");
         console.log(err);
       });
   };
 
   const clickDeleteImage = (item) => {
-    setDataDelete(item)
+    setDataDelete(item.img || item);
     handleClickOpenDelete();
-  }
+  };
 
   const handleDeleteImage = async () => {
     const desertRef = ref(storage, dataDelete.fullPath);
-    await deleteObject(desertRef).then(() => {
-      toast.success("Delete images successsssssssss ^-^");
-      handleCloseDelete()
-      getAllImages();
-      setDataDelete(null);
-    }).catch(err => {
-      toast.success("Delete images errorrrrrrr :(((");
-      console.log(err);
-    })
+    await deleteObject(desertRef)
+      .then(() => {
+        toast.success("Delete images successsssssssss ^-^");
+        setDataImageView({ img: "", index: 0 });
+        handleCloseDelete();
+        getAllImages();
+        setDataDelete(null);
+      })
+      .catch((err) => {
+        toast.success("Delete images errorrrrrrr :(((");
+        console.log(err);
+      });
   };
 
   const handleFullImage = (item, index) => {
     console.log(item, index);
-    setDataImageView({img: item, index: index})
+    setDataImageView({ img: item, index: index });
   };
 
   const imgAction = (action) => {
     let index = dataImageView.index;
-    if(action === 'next') {
-      setDataImageView({img: index === listUrl.length - 1 ? listUrl[0] : listUrl[index + 1], index: index === listUrl.length - 1 ? 0 : index + 1})
+    if (action === "next") {
+      setDataImageView({
+        img: index === listUrl.length - 1 ? listUrl[0] : listUrl[index + 1],
+        index: index === listUrl.length - 1 ? 0 : index + 1,
+      });
     }
-    if(action === 'prev') {
-      setDataImageView({img: index === 0 ? listUrl[listUrl.length - 1] : listUrl[index - 1], index: index === 0 ? listUrl.length - 1 : index - 1})
+    if (action === "prev") {
+      setDataImageView({
+        img: index === 0 ? listUrl[listUrl.length - 1] : listUrl[index - 1],
+        index: index === 0 ? listUrl.length - 1 : index - 1,
+      });
     }
-    if(!action) {
-      setDataImageView({img: '', index: 0})
+    if (!action) {
+      setDataImageView({ img: "", index: 0 });
     }
-  }
+  };
 
   if (!user) {
     return <Loading />;
   }
   return (
     <div className="site-content">
-      {loading && <Loading/>}
-      {dataImageView.img && 
+      {loading && codeDefault && <Loading />}
+      {dataImageView.img && (
         <div className="view-full-image">
-          <button className="btn-action btn-action-left" onClick={() => imgAction('prev')}><ArrowBackIcon/></button>
-          <img src={dataImageView.img?.url} alt="view-full"/>
-          <button className="btn-action btn-action-right" onClick={() => imgAction('next')}><ArrowForwardIcon/></button>
-          <button className="btn-action-close" onClick={() => imgAction('')}><CloseIcon/></button>
+          <button
+            className="btn-action btn-action-left"
+            onClick={() => imgAction("prev")}
+          >
+            <ArrowBackIcon />
+          </button>
+          <img src={dataImageView.img?.url} alt="view-full" />
+          <button
+            className="btn-action btn-action-right"
+            onClick={() => imgAction("next")}
+          >
+            <ArrowForwardIcon />
+          </button>
+          <div className="action-full-image">
+            <button className="btn-action-image btn-action-image-delete" onClick={() => clickDeleteImage(dataImageView)}>
+              <DeleteIcon />
+            </button>
+            <button className="btn-action-image btn-action-image-close" onClick={() => imgAction("")}>
+              <CloseIcon />
+            </button>
+          </div>
         </div>
-      }
+      )}
       <div className="container">
-        <div className="gallery-wrap">
+        {!codeDefault && <h3 className="not-enter-code">You have not entered the verification code <Link to="/">Go back home</Link></h3>}
+        {codeDefault && <div className="gallery-wrap">
           <div className="gallery-header flex-box">
             <h2 className="gallery-title">Fwn12tt's Gallery</h2>
             <button className="btn-upload" onClick={handleClickOpen}>
@@ -200,7 +233,7 @@ export default function Gallery() {
                 ))}
             </Masonry>
           </ResponsiveMasonry>
-        </div>
+        </div>}
       </div>
       <Dialog
         open={open}
@@ -226,10 +259,7 @@ export default function Gallery() {
               {images &&
                 images.map((image, index) => (
                   <div className="img-item" key={index}>
-                    <img
-                      src={URL.createObjectURL(image)}
-                      alt="preview"
-                    />
+                    <img src={URL.createObjectURL(image)} alt="preview" />
                   </div>
                 ))}
             </div>
@@ -262,8 +292,10 @@ export default function Gallery() {
             <h3 className="dialog-header-title">Delete Image</h3>
           </div>
           <div className="dialog-content dialog-delete-image">
-            <h3 style={{marginBottom: '15px'}}>Ảnh thì xóa thoải mái nhá Em ngố {':))'}</h3>
-            {dataDelete && <img src={dataDelete.url} alt="gallery-delete"/> }
+            <h3 style={{ marginBottom: "15px" }}>
+              Ảnh thì xóa thoải mái nhá Em ngố {":))"}
+            </h3>
+            {dataDelete && <img src={dataDelete.url} alt="gallery-delete" />}
           </div>
           <div className="dialog-bottom">
             <button
@@ -285,3 +317,11 @@ export default function Gallery() {
     </div>
   );
 }
+
+const mapStateToProps = state => {
+  return {
+    codeDefault: state.codeReducer.codeConfirm
+  }
+}
+
+export default connect(mapStateToProps)(Gallery);

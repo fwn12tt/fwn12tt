@@ -24,6 +24,17 @@
  display: flex;
 }
 
+.not-enter-code {
+ text-align: center;
+ margin-top: 20px;
+ font-size: 18px;
+ color: var(--color-secondary);
+}
+.not-enter-code a {
+ color: var(--color-primary);
+ font-size: 16px;
+}
+
 h1,
 h2,
 h3,
