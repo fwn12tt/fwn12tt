@@ -79,7 +79,7 @@ export default function Header() {
   );
 
   return (
-    <div className="header-section">
+    <header className="header-section">
       <div className="container">
         <div className="content-header flex-box">
           <div className="site-logo site-logo-desktop">
@@ -138,6 +138,6 @@ export default function Header() {
       <Drawer anchor={"left"} open={isOpen} onClose={toggleDrawer(false)} className="offcanvas-parent">
         {list("left")}
       </Drawer>
-    </div>
+    </header>
   );
 }

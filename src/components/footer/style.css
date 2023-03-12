@@ -1,0 +1,29 @@
+.footer-section {
+ background-color: #fff;
+ padding: 10px 0 ;
+}
+.content-footer {
+ justify-content: space-between;
+ align-items: center;
+}
+.make-by h3 {
+ font-size: 18px;
+ font-weight: 500;
+ color: var(--color-third);
+ line-height: 1;
+}
+@media (max-width:767px) {
+ .footer-section .site-logo {
+  display: block;
+ }
+}
+@media (max-width:575px) {
+ .content-footer {
+  flex-direction: column;
+ }
+ .make-by {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid var(--color-fifth-02);
+ }
+}

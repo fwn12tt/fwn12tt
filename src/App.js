@@ -20,6 +20,7 @@ import Categories from "./containers/categories";
 import Profile from "./containers/profile";
 import ForgotPassword from "./containers/forgotPassword";
 import SingleDiary from "./containers/singleDiary";
+import Footer from "./components/footer";
 
 function App() {
   const [user, loading] = useAuthState(auth);
@@ -32,7 +33,7 @@ function App() {
   }
   return (
     <div className="app">
-      <div className="site-wrapper">
+      <div className="site-wrapper" style={{justifyContent: "space-between"}}>
         <Toaster position="top-right"/>
         <Router>
           {user && <Header/>}
@@ -51,6 +52,7 @@ function App() {
             <Route exact path="/profile" element={<Profile />} />
             <Route exact path="/single-diary/:uid" element={<SingleDiary />} />
           </Routes>
+          {user && <Footer/>}
         </Router>
       </div>
     </div>

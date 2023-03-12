@@ -19,7 +19,7 @@ const Categories = ({ codeDefault }) => {
   const [uidDelete, setUidDelete] = useState("");
   const [currentPage, setcurrentPage] = useState(1);
   const [open, setOpen] = useState(false);
-  const [postPerPage] = useState(9);
+  const [postPerPage] = useState(12);
   const [user] = useAuthState(auth);
   const navigate = useNavigate();
 
@@ -138,7 +138,7 @@ const Categories = ({ codeDefault }) => {
                   </div>
                 ))}
           </div>
-          {diaries.length > 0 && diaries.length > 9 && (
+          {diaries.length > 0 && diaries.length > 12 && (
             <Pagination
               totalPost={diaries.length}
               postPerPage={postPerPage}
