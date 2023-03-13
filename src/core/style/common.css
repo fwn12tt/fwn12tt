@@ -6,10 +6,12 @@
  --color-fifth: #B4E197;
  --color-fifth-02: rgba(180, 225, 151, 0.2)
 }
+
 @import url('https://fonts.googleapis.com/css2?family=Creepster&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Galada&display=swap');
 
 *, body {
+ -webkit-box-sizing: border-box;
  box-sizing: border-box;
  padding: 0;
  margin: 0;
@@ -21,6 +23,8 @@
  min-height: 100vh;
  background-color: var(--color-fifth-02);
  position: relative;
+ display: -webkit-box;
+ display: -ms-flexbox;
  display: flex;
 }
 
@@ -30,6 +34,7 @@
  font-size: 18px;
  color: var(--color-secondary);
 }
+
 .not-enter-code a {
  color: var(--color-primary);
  font-size: 16px;
@@ -56,14 +61,23 @@ html {
 }
 
 .site-wrapper {
+ display: -webkit-box;
+ display: -ms-flexbox;
  display: flex;
+ -webkit-box-orient: vertical;
+ -webkit-box-direction: normal;
+ -ms-flex-direction: column;
  flex-direction: column;
  width: 100%;
 }
 
 .site-content {
  padding: 20px 0 20px 0;
+ display: -webkit-box;
+ display: -ms-flexbox;
  display: flex;
+ -webkit-box-align: start;
+ -ms-flex-align: start;
  align-items: flex-start;
  height: 100%;
 }
@@ -76,15 +90,24 @@ html {
 }
 
 .flex-box {
+ display: -webkit-box;
+ display: -ms-flexbox;
  display: flex;
+ -ms-flex-wrap: wrap;
  flex-wrap: wrap;
 }
 
 .flex-column {
+ -webkit-box-orient: vertical;
+ -webkit-box-direction: normal;
+ -ms-flex-direction: column;
  flex-direction: column;
 }
 
 .flex-row {
+ -webkit-box-orient: horizontal;
+ -webkit-box-direction: normal;
+ -ms-flex-direction: row;
  flex-direction: row;
 }
 
@@ -137,29 +160,37 @@ html {
  padding: 8px 12px !important;
  cursor: pointer !important;
 }
+
 .line-clamp {
  display: -webkit-box;
- -webkit-box-orient: vertical;  
+ -webkit-box-orient: vertical;
  overflow: hidden;
 }
+
 .line-clamp-1 {
  -webkit-line-clamp: 1;
 }
+
 .line-clamp-2 {
  -webkit-line-clamp: 2;
 }
+
 .line-clamp-3 {
  -webkit-line-clamp: 3;
 }
+
 .line-clamp-4 {
  -webkit-line-clamp: 4;
 }
+
 .line-clamp-5 {
  -webkit-line-clamp: 5;
 }
+
 .line-clamp-6 {
  -webkit-line-clamp: 6;
 }
+
 @media (min-width: 768px) {
  .container {
   width: 750px;
@@ -182,10 +213,12 @@ html {
   width: 540px;
  }
 }
+
 @media(max-width: 575px) {
  .container {
   width: 100%;
  }
+
  .btn-button {
   font-size: 11px !important;
  }

@@ -14,9 +14,9 @@ import toast from "react-hot-toast";
 
 const diariesDB = collection(db, "diaries");
 
-const createDiary = async (uid, userUid, userEmail, userName, userUrl, content, statusMood) => {
+const createDiary = async (uid, userUid, userEmail, userName, userUrl, title, urlImage,  content, statusMood) => {
   try {
-    await setDoc(doc(db, 'diaries', uid), {userUid, userEmail, userName, userUrl, content, statusMood})
+    await setDoc(doc(db, 'diaries', uid), {userUid, userEmail, userName, userUrl, title, urlImage, content, statusMood})
     toast.success("Create diary successsssssssss ^-^");
     const docSnap = await getDoc(doc(db, 'diaries', uid));
     if (docSnap.exists()) {

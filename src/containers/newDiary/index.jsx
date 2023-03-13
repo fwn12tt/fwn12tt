@@ -20,12 +20,23 @@ import {
 import { v4 as uuidv4 } from "uuid";
 import LoadingService from "../../core/common/loadingService";
 import { connect } from "react-redux";
+import { storage } from "../../firebase";
+import {
+  ref,
+  uploadBytesResumable,
+  listAll,
+  getDownloadURL,
+  deleteObject,
+} from "firebase/storage";
 
 const NewDiary = ({ codeDefault }) => {
   const [content, setContent] = useState("");
+  const [title, setTitle] = useState("");
+  const [image, setImage] = useState(null);
   const [status, setStatus] = useState("happy");
   const [isValidSave, setIsValidSave] = useState(false);
   const [textMood, setTextMood] = useState(CONSTANTS.TEXT_HAPPY);
+  const [imagePreview, setImagePreview] = useState('');
   const [user] = useAuthState(auth);
   const [uid, setUid] = useState("");
   const [loading, setLoading] = useState(false);
@@ -45,10 +56,14 @@ const NewDiary = ({ codeDefault }) => {
       setLoading(true);
       getDiary(location.state?.uid).then((res) => {
         setContent(res.data().content);
+        setTitle(res.data().title);
+        setImagePreview(res.data().urlImage);
+        setImage(null);
         setUid(res.id);
         setStatus(res.data().statusMood);
         controlProps(res.data().statusMood);
         setLoading(false);
+        setIsValidSave(true);
       });
     }
 
@@ -81,6 +96,31 @@ const NewDiary = ({ codeDefault }) => {
         break;
     }
   };
+  const handleUpload = (uid) => {
+      return new Promise((resolve, reject) => {
+        const uploadImage = ref(storage, `diary_image/${uid}`);
+      const uploadTask = uploadBytesResumable(uploadImage, image);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+        },
+        (err) => {
+          console.log(err);
+        },
+        async () => {
+          try {
+            const url = await getDownloadURL(uploadImage);
+            resolve(url);
+          } catch (error) {
+            reject(error);
+          }
+        }
+      );
+      })
+  };
   const controlProps = (item) => ({
     checked: status === item,
     onChange: onChangeStatus,
@@ -102,22 +142,36 @@ const NewDiary = ({ codeDefault }) => {
     let uidv4 = uuidv4();
     setLoading(true);
     if (!uid) {
-      createDiary(
-        uidv4,
-        userUid,
-        userEmail,
-        userName,
-        userUrl,
-        content,
-        statusMood
-      ).then((res) => {
-        setUid(res.id);
-        setLoading(false);
+      handleUpload(uidv4).then(res => {
+        createDiary(
+          uidv4,
+          userUid,
+          userEmail,
+          userName,
+          userUrl,
+          title,
+          res,
+          content,
+          statusMood
+        ).then((res) => {
+          setUid(res.id);
+          setLoading(false);
+        });
+      }).catch(err => {
+        console.log(err);
       });
     } else {
-      updateDiary(uid, { content, statusMood }).then((res) => {
-        setLoading(false);
-      });
+      if(image) {
+        handleUpload(uid).then(urlImage => {
+          updateDiary(uid, {title, urlImage, content, statusMood }).then((res) => {
+            setLoading(false);
+          });
+        })
+      }else {
+        updateDiary(uid, {title, content, statusMood }).then((res) => {
+          setLoading(false);
+        });
+      }
     }
   };
   const onClear = (event) => {
@@ -127,8 +181,17 @@ const NewDiary = ({ codeDefault }) => {
     setStatus("happy");
     controlProps("happy");
     setContent("");
+    setImage(null)
+    setTitle('')
     setIsValidSave(false);
   };
+
+  const onChangeImage = e => {
+    if(e.target.files) {
+      setImage(e.target.files[0]);
+      setImagePreview('')
+    }
+  }
   return (
     <div className="site-content">
       {loading && <LoadingService />}
@@ -197,6 +260,15 @@ const NewDiary = ({ codeDefault }) => {
                 <h4 className="text-mood">{textMood}</h4>
               </FormControl>
             </div>
+            <div className="form-control">
+              <h2>Title Diary</h2>
+              <textarea value={title} onChange={e => setTitle(e.target.value)} rows="3"></textarea>
+            </div>
+            <div className="form-control">
+              <h2 style={{marginTop: "-10px"}}>Choose Image</h2>
+              <input type="file" accept="image/*" onChange={e => onChangeImage(e)}/>
+              {(image || imagePreview) && <img className="diary-image" src={image ? URL.createObjectURL(image) : imagePreview} alt="diary-img"/>}
+            </div>
             <ReactQuill
               theme="snow"
               value={content}
@@ -209,7 +281,7 @@ const NewDiary = ({ codeDefault }) => {
           <div className="list-btn" style={{ marginTop: "15px" }}>
             <button
               className="btn-save-diary"
-              disabled={!isValidSave}
+              disabled={!isValidSave || !title || (image ? !image : !imagePreview)}
               onClick={(e) =>
                 onSaveDiary(
                   e,

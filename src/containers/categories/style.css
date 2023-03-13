@@ -1,13 +1,20 @@
 .categories .diary-single {
  background-color: none;
  border: 1px solid rgba(40, 84, 48, 0.5);
+ -webkit-box-shadow: 6px 6px 6px 0px var(--color-primary);
  box-shadow: 6px 6px 6px 0px var(--color-primary);
+ -webkit-transition: all 0.3s;
+ -o-transition: all 0.3s;
  transition: all 0.3s;
 }
 
 .diary-bottom,
 .diary-top {
+ -webkit-box-pack: justify;
+ -ms-flex-pack: justify;
  justify-content: space-between;
+ -webkit-box-align: center;
+ -ms-flex-align: center;
  align-items: center;
 }
 
@@ -80,6 +87,8 @@
 }
 
 .diary-bottom .diary-author {
+ -webkit-box-align: center;
+ -ms-flex-align: center;
  align-items: center;
 }
 
@@ -166,15 +175,22 @@
 .empty-diary img {
  width: 540px;
  height: 600px;
+ -o-object-fit: cover;
  object-fit: cover;
 }
 
 @media (min-width: 421px) and (max-width:575px) {
  .diary-bottom {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
  }
 
  .diary-author {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column;
   padding-bottom: 8px;
   margin-bottom: 8px;
