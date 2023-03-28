@@ -1,0 +1,4 @@
+{
+ "appService.defaultWebAppToDeploy": "/subscriptions/bb8c6cb4-6221-47f6-8804-af61319b6534/AppServices/subscriptions/bb8c6cb4-6221-47f6-8804-af61319b6534/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/fwn12ttdiary",
+ "appService.deploySubpath": "."
+}
