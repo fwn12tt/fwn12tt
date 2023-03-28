@@ -215,6 +215,7 @@
  font-size: 16px;
  font-weight: 600;
  position: relative;
+ color: #222;
 }
 
 .offcanvas-parent .offcanvas-menu a.active {
